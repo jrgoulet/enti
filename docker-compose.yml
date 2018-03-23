@@ -1,0 +1,72 @@
+version: '2.1'
+
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ROLE=ui
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=5100
+    ports:
+      - "5100:5100"
+    restart: always
+    volumes:
+      - logs:/var/log/enti
+    tty: true
+    command: "gunicorn -k eventlet -w 1 enti:app -b 0.0.0.0:5100"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ROLE=worker
+    volumes:
+      - logs:/var/log/enti
+    depends_on:
+      - redis
+    restart: always
+    tty: true
+    command: "celery -A enti.tasks worker -l INFO"
+
+  elasticsearch:
+    image: elasticsearch:5.4.3
+    command: elasticsearch -E network.host=0.0.0.0 -E discovery.zen.minimum_master_nodes=1
+    environment:
+      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+    ports:
+      - "9200:9200"
+
+  kibana:
+   image: kibana:5.4.3
+   environment:
+     - ELASTICSEARCH_URL=http://elasticsearch:9200
+   ports:
+     - "5601:5601"
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=0.0.0.0
+    restart: always
+    ports:
+      - "8080:80"
+
+  redis:
+    image: redis
+    restart: always
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=enti
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "5012:3306"
+    volumes:
+      - schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+volumes:
+  logs:
