@@ -31,20 +31,20 @@ services:
     tty: true
     command: "celery -A enti.tasks worker -l INFO"
 
-  elasticsearch:
-    image: elasticsearch:5.4.3
-    command: elasticsearch -E network.host=0.0.0.0 -E discovery.zen.minimum_master_nodes=1
-    environment:
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
-    ports:
-      - "9200:9200"
-
-  kibana:
-   image: kibana:5.4.3
-   environment:
-     - ELASTICSEARCH_URL=http://elasticsearch:9200
-   ports:
-     - "5601:5601"
+#  elasticsearch:
+#    image: elasticsearch:5.4.3
+#    command: elasticsearch -E network.host=0.0.0.0 -E discovery.zen.minimum_master_nodes=1
+#    environment:
+#      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+#    ports:
+#      - "9200:9200"
+#
+#  kibana:
+#   image: kibana:5.4.3
+#   environment:
+#     - ELASTICSEARCH_URL=http://elasticsearch:9200
+#   ports:
+#     - "5601:5601"
 
   pma:
     image: phpmyadmin/phpmyadmin
@@ -64,9 +64,9 @@ services:
       - MYSQL_DATABASE=enti
       - MYSQL_ROOT_PASSWORD=root
     ports:
-      - "5012:3306"
+      - "3307:3306"
     volumes:
-      - schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./res/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
 volumes:
   logs:

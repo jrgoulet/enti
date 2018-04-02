@@ -29,3 +29,14 @@ class DBConfig:
 class CeleryConfig:
     BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379')
     BACKEND_URL = os.environ.get('CELERY_BACKEND_URL', 'redis://redis:6379')
+
+class AppConfig(CeleryConfig, DBConfig, UIConfig):
+    MODE = os.environ.get('MODE', 'development')
+    SERVER_HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
+    SERVER_PORT = os.environ.get('SERVER_PORT', 5100)
+    ROLE = os.environ.get('ROLE', 'worker')
+
+    def echo(self):
+        print("Server Mode: {}\n".format(AppConfig.MODE)+
+              "Server URL: {}:{}".format(AppConfig.SERVER_HOST, AppConfig.SERVER_PORT)+
+              "Server Role: {}".format(AppConfig.ROLE))
