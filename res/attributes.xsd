@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Present both in resources tc-entities-engine/pluginResources ... mods in resources need to be synchronized -->
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.digitalreasoning.com/entity/attribute/definitions"
+        xmlns="http://www.digitalreasoning.com/entity/attribute/definitions"
+        elementFormDefault="qualified">
+
+    <xsd:simpleType name="arity-restriction">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ONE"/>
+            <xsd:enumeration value="FEW"/>
+            <xsd:enumeration value="MANY"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="name-restriction">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[a-zA-Z]([a-zA-Z0-9_\-])*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="attribute-definition">
+        <xsd:attribute name="name" type="name-restriction" use="required"/>
+        <xsd:attribute name="required" type="xsd:boolean" default="false"/>
+        <xsd:attribute name="arity" type="arity-restriction" default="MANY"/>
+        <xsd:attribute name="display-name" type="xsd:string"/>
+        <xsd:attribute name="description" type="xsd:string"/>
+        <!-- xsd:attribute name="frequency" type="arity-restriction" /-->
+    </xsd:complexType>
+
+	<xsd:simpleType name="id-type-enum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ANN" />
+			<xsd:enumeration value="ELE" />
+			<xsd:enumeration value="CON" />
+			<xsd:enumeration value="ECX" />
+			<xsd:enumeration value="ELE" />
+			<xsd:enumeration value="FIM" />
+			<xsd:enumeration value="LOC" />
+			<xsd:enumeration value="MES" />
+			<xsd:enumeration value="NUL" />
+			<xsd:enumeration value="PRO" />
+			<xsd:enumeration value="REL" />
+			<xsd:enumeration value="CRC" />
+			<xsd:enumeration value="CRE" />
+			<xsd:enumeration value="TEX" />
+			<xsd:enumeration value="EEN" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="named-reference-definition">
+		<xsd:complexContent>
+			<xsd:extension base="attribute-definition">
+				<xsd:attribute name="id-type" type="id-type-enum" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+    <xsd:complexType name="enumeration-definition">
+        <xsd:sequence>
+            <xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="string-definition">
+        <xsd:complexContent>
+            <xsd:extension base="attribute-definition">
+                <xsd:sequence>
+                    <xsd:element name="enumeration" type="enumeration-definition" minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="attributes">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="boolean" type="attribute-definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="integer" type="attribute-definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="entity" type="attribute-definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="named-reference" type="named-reference-definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="date" type="attribute-definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="string" type="string-definition" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.digitalreasoning.com/entity/definitions" elementFormDefault="qualified" targetNamespace="http://www.digitalreasoning.com/entity/definitions">
+  <xsd:simpleType name="_entity-type-restriction">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PERSON"/>
+      <xsd:enumeration value="GPE"/>
+      <xsd:enumeration value="LOCATION"/>
+      <xsd:enumeration value="FIN_INST"/>
+      <xsd:enumeration value="PHONE"/>
+      <xsd:enumeration value="ORGANIZATION"/>
+      <xsd:enumeration value="GOV_ORG"/>
+      <xsd:enumeration value="MILITARY"/>
+      <xsd:enumeration value="BUSINESS"/>
+      <xsd:enumeration value="ACADEMIC"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="id-type-enum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ANN"/>
+      <xsd:enumeration value="ELE"/>
+      <xsd:enumeration value="CON"/>
+      <xsd:enumeration value="ECX"/>
+      <xsd:enumeration value="ELE"/>
+      <xsd:enumeration value="FIM"/>
+      <xsd:enumeration value="LOC"/>
+      <xsd:enumeration value="MES"/>
+      <xsd:enumeration value="NUL"/>
+      <xsd:enumeration value="PRO"/>
+      <xsd:enumeration value="REL"/>
+      <xsd:enumeration value="CRC"/>
+      <xsd:enumeration value="CRE"/>
+      <xsd:enumeration value="TEX"/>
+      <xsd:enumeration value="EEN"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="parent-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="documents-type-id-type-enum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MES"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="documents-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="id-type" type="documents-type-id-type-enum"/>
+          <xsd:attribute name="id-seed" type="xsd:string"/>
+          <xsd:attribute name="name" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="birth_date-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:dateTime" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="spouse-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ssn-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="mother-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="son-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="dissolved_at-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="dissolved_date-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:dateTime" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="employs-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="context-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="member_of-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="residence-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="founded_by-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="hq_located_at-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="sister-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="death_date-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:dateTime" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="nationality-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="phone-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="founded_at-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="daughter-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="brother-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="child-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="principal_for-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="cause_of_death-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="gender-type-enum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="F"/>
+      <xsd:enumeration value="M"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="gender-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="gender-type-enum" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ethnicity-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="father-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="uncle-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="title-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="founded_date-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:dateTime" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="principal-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="employed_by-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="num_employees-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:integer" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="related-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="org_child-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="aunt-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="alias-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="birth_location-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="affiliated_with-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="email-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="org_parent-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="website-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="founded-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="attended_school-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="cousin-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="death_location-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="religion-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="sibling-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="killed_by-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="location-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="v" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="affiliate-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="1" name="value">
+        <xsd:complexType>
+          <xsd:attribute name="source" type="xsd:string"/>
+          <xsd:attribute name="sid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="_entity-type">
+    <xsd:all>
+      <xsd:element minOccurs="0" name="parent" type="parent-type"/>
+      <xsd:element minOccurs="0" name="documents" type="documents-type"/>
+      <xsd:element minOccurs="0" name="birth_date" type="birth_date-type"/>
+      <xsd:element minOccurs="0" name="spouse" type="spouse-type"/>
+      <xsd:element minOccurs="0" name="ssn" type="ssn-type"/>
+      <xsd:element minOccurs="0" name="mother" type="mother-type"/>
+      <xsd:element minOccurs="0" name="son" type="son-type"/>
+      <xsd:element minOccurs="0" name="dissolved_at" type="dissolved_at-type"/>
+      <xsd:element minOccurs="0" name="dissolved_date" type="dissolved_date-type"/>
+      <xsd:element minOccurs="0" name="employs" type="employs-type"/>
+      <xsd:element minOccurs="0" name="context" type="context-type"/>
+      <xsd:element minOccurs="0" name="member_of" type="member_of-type"/>
+      <xsd:element minOccurs="0" name="residence" type="residence-type"/>
+      <xsd:element minOccurs="0" name="founded_by" type="founded_by-type"/>
+      <xsd:element minOccurs="0" name="hq_located_at" type="hq_located_at-type"/>
+      <xsd:element minOccurs="0" name="sister" type="sister-type"/>
+      <xsd:element minOccurs="0" name="death_date" type="death_date-type"/>
+      <xsd:element minOccurs="0" name="nationality" type="nationality-type"/>
+      <xsd:element minOccurs="0" name="phone" type="phone-type"/>
+      <xsd:element minOccurs="0" name="founded_at" type="founded_at-type"/>
+      <xsd:element minOccurs="0" name="daughter" type="daughter-type"/>
+      <xsd:element minOccurs="0" name="brother" type="brother-type"/>
+      <xsd:element minOccurs="0" name="child" type="child-type"/>
+      <xsd:element minOccurs="0" name="principal_for" type="principal_for-type"/>
+      <xsd:element minOccurs="0" name="cause_of_death" type="cause_of_death-type"/>
+      <xsd:element minOccurs="0" name="gender" type="gender-type"/>
+      <xsd:element minOccurs="0" name="ethnicity" type="ethnicity-type"/>
+      <xsd:element minOccurs="0" name="father" type="father-type"/>
+      <xsd:element minOccurs="0" name="uncle" type="uncle-type"/>
+      <xsd:element minOccurs="0" name="title" type="title-type"/>
+      <xsd:element minOccurs="0" name="founded_date" type="founded_date-type"/>
+      <xsd:element minOccurs="0" name="principal" type="principal-type"/>
+      <xsd:element minOccurs="0" name="employed_by" type="employed_by-type"/>
+      <xsd:element minOccurs="0" name="num_employees" type="num_employees-type"/>
+      <xsd:element minOccurs="0" name="related" type="related-type"/>
+      <xsd:element minOccurs="0" name="org_child" type="org_child-type"/>
+      <xsd:element minOccurs="0" name="aunt" type="aunt-type"/>
+      <xsd:element minOccurs="0" name="alias" type="alias-type"/>
+      <xsd:element minOccurs="0" name="birth_location" type="birth_location-type"/>
+      <xsd:element minOccurs="0" name="affiliated_with" type="affiliated_with-type"/>
+      <xsd:element minOccurs="0" name="email" type="email-type"/>
+      <xsd:element minOccurs="0" name="org_parent" type="org_parent-type"/>
+      <xsd:element minOccurs="0" name="website" type="website-type"/>
+      <xsd:element minOccurs="0" name="founded" type="founded-type"/>
+      <xsd:element minOccurs="0" name="attended_school" type="attended_school-type"/>
+      <xsd:element minOccurs="0" name="cousin" type="cousin-type"/>
+      <xsd:element minOccurs="0" name="death_location" type="death_location-type"/>
+      <xsd:element minOccurs="0" name="religion" type="religion-type"/>
+      <xsd:element minOccurs="0" name="sibling" type="sibling-type"/>
+      <xsd:element minOccurs="0" name="killed_by" type="killed_by-type"/>
+      <xsd:element minOccurs="0" name="location" type="location-type"/>
+      <xsd:element minOccurs="0" name="affiliate" type="affiliate-type"/>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:attribute name="type" type="_entity-type-restriction" use="required"/>
+    <xsd:attribute name="securityLabel" type="xsd:string"/>
+    <xsd:attribute default="false" name="canonical" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:element name="entities">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" minOccurs="1" name="entity" type="_entity-type"/>
+      </xsd:sequence>
+      <xsd:attribute name="source" type="xsd:string" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
