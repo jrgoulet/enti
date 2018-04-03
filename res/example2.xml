@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<entities xmlns="http://www.digitalreasoning.com/entity/definitions" source="C2IE">
+    <entity id="drs.locations.61" name="Collins Reef" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="Johnson North Reef"/>
+            <value v="Johnson Reef"/>
+            <value v="鬼喊礁"/>
+            <value v="Guihan Reef"/>
+            <value v="Co Lin Reef"/>
+            <value v="鬼喊礁"/>
+        </alias>
+        <coordinates>
+            <value v="9°46&apos;21.9&quot;N 114°15&apos;22.4&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/cOr7N"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.38" name="Cuarteron Reef" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="华阳礁"/>
+            <value v="Huayang Reef"/>
+            <value v="Calderon Reef"/>
+        </alias>
+        <coordinates>
+            <value v="8°54&apos;35.0&quot;N 112°50&apos;54.6&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/DGm93"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.19" name="Fiery Cross Reef" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="永暑礁"/>
+            <value v="Yongshu Reef"/>
+            <value v="Kagitingan Reef"/>
+            <value v="Du Chu Thap Island"/>
+        </alias>
+        <coordinates>
+            <value v="9°38&apos;08.3&quot;N 112°56&apos;59.9&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/TZOpl"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.54" name="Gaven Reefs" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="南薰礁"/>
+            <value v="西南礁"/>
+            <value v="Nanxun Reef"/>
+            <value v="Xinan Reef"/>
+            <value v="Burgos"/>
+        </alias>
+        <coordinates>
+            <value v="10°12&apos;36.3&quot;N 114°13&apos;31.9&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/w0fLx"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.59" name="Itu Aba Island" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="太平岛"/>
+            <value v="Taiping Island"/>
+            <value v="Ligao Island"/>
+            <value v="Ba Binh Island"/>
+            <value v="太平島"/>
+        </alias>
+        <coordinates>
+            <value v="10°22&apos;42.3&quot;N 114°21&apos;55.3&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/RhB8l"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.60" name="Johnson South Reef" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="Johnson Reef"/>
+            <value v="赤瓜礁"/>
+            <value v="Chigua Reef"/>
+            <value v="Mabini Reef"/>
+            <value v="Gac Ma Reef"/>
+        </alias>
+        <coordinates>
+            <value v="9.71389°N 114.286°E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/MP6I1"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.62" name="Louisa Reef" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="南通礁"/>
+            <value v="Nantong Reef"/>
+            <value v="南通礁"/>
+        </alias>
+        <coordinates>
+            <value v="6°20&apos;32.3&quot;N 113°14&apos;02.5&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/bzKCC"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.14" name="Macclesfield Bank" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="中沙群岛"/>
+            <value v="Zhongsha Islands"/>
+            <value v="中沙群島"/>
+        </alias>
+        <coordinates>
+            <value v="16°00′N 114°30′E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/ytxxF"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.63" name="Mischief Reef" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="美济礁"/>
+            <value v="Meiji Reef"/>
+            <value v="Panganiban Reef"/>
+            <value v="Vanh Khan Reef"/>
+            <value v="美濟礁"/>
+        </alias>
+        <coordinates>
+            <value v="9°53&apos;53.4&quot;N 115°32&apos;12.3&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/dycXm"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.67" name="Pagasa Island" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="中业岛"/>
+            <value v="Zhongye Island"/>
+            <value v="Pagasa Island"/>
+            <value v="Thitu Island"/>
+            <value v="Thi Tu Island"/>
+            <value v="Pag-asa Island"/>
+            <value v="Pag-asa Atoll"/>
+            <value v="中業島"/>
+        </alias>
+        <coordinates>
+            <value v="11°03&apos;09.8&quot;N 114°17&apos;29.1&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/eGtKD"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.12" name="Paracel Islands" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="西沙群岛"/>
+            <value v="Xisha Islands"/>
+            <value v="Hoàng Sa Islands"/>
+            <value v="Hoang Sa Islands"/>
+        </alias>
+        <coordinates>
+            <value v="16°40&apos;00.0&quot;N 112°20&apos;00.0&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/vz5mQ"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.15" name="Pratas Islands" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="东沙群岛"/>
+            <value v="Dongsha Islands"/>
+            <value v="东沙群島"/>
+        </alias>
+        <coordinates>
+            <value v="20°42&apos;11.8&quot;N 116°43&apos;01.7&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/r6iT5"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.69" name="Reed Bank" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="Reed Tablemount"/>
+            <value v="Recto Bank"/>
+            <value v="礼乐滩"/>
+            <value v="Liyue Bank"/>
+            <value v="禮樂灘"/>
+        </alias>
+        <coordinates>
+            <value v="11°28&apos;46.4&quot;N 116°44&apos;50.8&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/qEP1p"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.16" name="Scarborough Shoal" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="Scarborough Reef"/>
+            <value v="Democracy Reef"/>
+            <value v="黄岩岛"/>
+            <value v="民主礁"/>
+            <value v="Huangyan Island"/>
+            <value v="Bajo de Masinloc"/>
+            <value v="Panatag Shoal"/>
+            <value v="黃岩島"/>
+        </alias>
+        <coordinates>
+            <value v="15°11&apos;35.1&quot;N 117°45&apos;57.5&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/9tJqB"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.11" name="South China Sea" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="南海"/>
+            <value v="West Philippine Sea"/>
+            <value v="East Sea"/>
+        </alias>
+        <coordinates>
+            <value v="15°29&apos;18.1&quot;N 114°24&apos;17.3&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/Rdrdu"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.13" name="Spratly Islands" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="南沙群岛"/>
+            <value v="Nansha Islands"/>
+            <value v="Kalayaan Island"/>
+            <value v="Trường Sa Island"/>
+            <value v="Truong Sa Island"/>
+            <value v="南沙群島"/>
+        </alias>
+        <coordinates>
+            <value v="10°11&apos;57.1&quot;N 114°21&apos;51.8&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/N3kmV"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.17" name="Triton Island" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="中建岛"/>
+            <value v="Zhongjian Island"/>
+            <value v="中建島"/>
+        </alias>
+        <coordinates>
+            <value v="15°55&apos;56.1&quot;N 111°12&apos;11.6&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/TaVfd"/>
+        </googlelink>
+    </entity>
+    <entity id="drs.locations.18" name="Woody Island" type="GEOGRAPHIC_FEATURE" canonical="true">
+        <alias>
+            <value v="永兴岛"/>
+            <value v="Yongxing Island"/>
+            <value v="Phu Lam Island"/>
+            <value v="永興島"/>
+        </alias>
+        <coordinates>
+            <value v="16°50&apos;03.0&quot;N 112°20&apos;15.0&quot;E"/>
+        </coordinates>
+        <googlelink>
+            <value v="https://goo.gl/maps/c2d69"/>
+        </googlelink>
+    </entity>
+</entities>

@@ -65,7 +65,7 @@ services:
   pma:
     image: phpmyadmin/phpmyadmin
     environment:
-      - PMA_HOST=0.0.0.0
+      - PMA_HOST=mysql
     restart: always
     ports:
       - "8080:80"
@@ -77,8 +77,10 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=app
+      - MYSQL_DATABASE=enti
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=enti
+      - MYSQL_PASSWORD=enti
     ports:
       - "3307:3306"
     volumes:

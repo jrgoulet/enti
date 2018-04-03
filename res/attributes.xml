@@ -114,11 +114,11 @@
 	        description="an organization for which this entity is a principal member"
 	        arity="FEW" />
 
-        <named-reference name="documents"
-                         display-name="KODOCUMENT"
-                         description="associated documents"
-                         arity="MANY"
-                         id-type="MES" />
+    <named-reference name="documents"
+                     display-name="KODOCUMENT"
+                     description="associated documents"
+                     arity="MANY"
+                     id-type="MES" />
 
 	<date name="birth_date"
 	      display-name="KOBIRTHDATE"
