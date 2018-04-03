@@ -14,8 +14,10 @@ services:
     restart: always
     volumes:
       - logs:/var/log/app
+      # Remove after prototyping
+      - .:/opt/enti
     tty: true
-    command: "gunicorn -k eventlet -w 1 enti:app -b 0.0.0.0:5100"
+    command: "gunicorn -k eventlet -w 1 enti:app -b 0.0.0.0:5100 --reload"
 
   worker:
     build:

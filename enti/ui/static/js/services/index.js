@@ -1,0 +1,5 @@
+define([
+	'./IOSvc',
+	'./NotificationSvc'
+], function () {
+});

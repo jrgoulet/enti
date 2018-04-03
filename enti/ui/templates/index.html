@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Enti</title>
-</head>
-<body>
-<h1>Hi, this is Enti.</h1>
-</body>
-</html>
+{% extends 'layout.html' %}
+
+
+{% block header %}
+
+    <div class="app-header">
+        <img class="app-brand" src="/static/img/dr_header_logo.svg">
+        <ul class="app-nav">
+            <li class="active"><a>Entities</a></li>
+        </ul>
+    </div>
+
+{% endblock %}
+{% block content %}
+
+    <div class="app-container" ng-controller="AppCtrl">
+        <div class="col-md-row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2 enti-sidebar">
+                        {% include 'sidebar.html' %}
+                    </div>
+                    <div class="col-md-10">
+                        {% include 'directory.html' %}
+                        {% include 'editor.html' %}
+                        {% include 'import.html' %}
+                        {% include 'export.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

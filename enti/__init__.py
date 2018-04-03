@@ -40,7 +40,8 @@ class Server():
         """
         socketio.run(self.app,
                      host=AppConfig.SERVER_HOST,
-                     port=int(AppConfig.SERVER_PORT))
+                     port=int(AppConfig.SERVER_PORT),
+                     use_reloader=True)
 
 app = Server().app
 
