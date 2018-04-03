@@ -13,7 +13,7 @@ services:
       - "5100:5100"
     restart: always
     volumes:
-      - logs:/var/log/enti
+      - logs:/var/log/app
     tty: true
     command: "gunicorn -k eventlet -w 1 enti:app -b 0.0.0.0:5100"
 
@@ -24,12 +24,26 @@ services:
     environment:
       - ROLE=worker
     volumes:
-      - logs:/var/log/enti
+      - logs:/var/log/app
     depends_on:
       - redis
     restart: always
     tty: true
     command: "celery -A enti.tasks worker -l INFO"
+
+  beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ROLE=beat
+    volumes:
+      - logs:/var/log/app
+    depends_on:
+      - redis
+    restart: always
+    tty: true
+    command: "celery -A enti.tasks beat -l INFO"
 
 #  elasticsearch:
 #    image: elasticsearch:5.4.3
@@ -61,7 +75,7 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=enti
+      - MYSQL_DATABASE=app
       - MYSQL_ROOT_PASSWORD=root
     ports:
       - "3307:3306"

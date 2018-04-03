@@ -3,13 +3,13 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema enti
+-- Schema app
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `enti` DEFAULT CHARACTER SET utf8 ;
 USE `enti` ;
 
 -- -----------------------------------------------------
--- Table `enti`.`EntityType`
+-- Table `app`.`EntityType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enti`.`EntityType` (
   `id` INT NOT NULL,
@@ -19,7 +19,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `enti`.`Entity`
+-- Table `app`.`Entity`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enti`.`Entity` (
   `id` VARCHAR(128) NOT NULL,
@@ -37,7 +37,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `enti`.`ArityType`
+-- Table `app`.`ArityType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enti`.`ArityType` (
   `id` INT NOT NULL,
@@ -48,7 +48,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `enti`.`AttributeType`
+-- Table `app`.`AttributeType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enti`.`AttributeType` (
   `id` INT NOT NULL,
@@ -58,7 +58,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `enti`.`Attribute`
+-- Table `app`.`Attribute`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enti`.`Attribute` (
   `id` VARCHAR(128) NOT NULL,
@@ -86,7 +86,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `enti`.`EntityAttribute`
+-- Table `app`.`EntityAttribute`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enti`.`EntityAttribute` (
   `id` VARCHAR(128) NOT NULL,

@@ -16,7 +16,7 @@ class UIConfig:
 
 class DBConfig:
     DB_TYPE = os.environ.get('DATABASE_TYPE', 'mysql')
-    DB_NAME = os.environ.get('DATABASE_NAME', 'enti')
+    DB_NAME = os.environ.get('DATABASE_NAME', 'app')
     DB_HOST = os.environ.get('DATABASE_HOST', 'mysql')
     DB_PORT = os.environ.get('DATABASE_PORT', '3306')
     DB_USER = os.environ.get('DATABASE_USER', 'root')

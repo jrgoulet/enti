@@ -11,10 +11,9 @@ from sqlalchemy import exc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-from enti.extensions import log, celery
+from enti.extensions import celery, log
 from enti.models import MODELS
 from enti.settings import DBConfig
-
 
 engine = create_engine(DBConfig.DB_URI,
                        convert_unicode=True,
@@ -59,7 +58,7 @@ def init_db():
             initialized = True
 
         except Exception as e:
-            #log.exception(e)
+            # log.exception(e)
             log.info('Waiting for database to initialize', whistle=False)
             sleep(5)
 
@@ -71,7 +70,7 @@ def set_tx_isolation(engine):
     #     engine.execute('SET GLOBAL transaction_isolation=\'READ-COMMITTED\';')
     # except:
     #     engine.execute('SET GLOBAL tx_isolation=\'READ-COMMITTED\';')
-    #log.info('Set MYSQL global transation isolation level to READ-COMMITTED')
+    # log.info('Set MYSQL global transation isolation level to READ-COMMITTED')
     pass
 
 
@@ -80,6 +79,7 @@ def add_engine_pidguard(engine):
 
     Forces a connection to be reconnected if it is detected as having been shared to a sub-process.
     """
+
     @event.listens_for(engine, "connect")
     def connect(dbapi_connection, connection_record):
         connection_record.info['pid'] = os.getpid()
@@ -113,4 +113,3 @@ def session_scope():
 
     finally:
         session.close()
-

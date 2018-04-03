@@ -1,12 +1,13 @@
 import warnings
 from enti.utils.logger import Logger
-from celery import Celery
-from enti.settings import CeleryConfig
 from sqlalchemy.ext.declarative import declarative_base
 from flask.exthook import ExtDeprecationWarning
 from flask_socketio import SocketIO
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from celery import Celery
+from enti.settings import CeleryConfig
+
 
 warnings.simplefilter('ignore', ExtDeprecationWarning)
 
@@ -27,7 +28,7 @@ log = Logger()
 
 # Asynchronous Task Management
 celery = Celery(
-    'enti.tasks',
+    'app.tasks',
     broker=CeleryConfig.BROKER_URL,
     backend=CeleryConfig.BACKEND_URL
 )

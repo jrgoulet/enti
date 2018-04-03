@@ -23,7 +23,7 @@ class Server():
                 "                   ".format(__version__)
             )
 
-            from enti.ui.app import create_app
+            from enti.ui.conf import create_app
             self.app = create_app(AppConfig)
             CORS(self.app)
 
