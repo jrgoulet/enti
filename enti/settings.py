@@ -16,9 +16,15 @@ class UIConfig:
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 
+class SchemaConfig:
+    SRC_ROOT = os.path.join(os.curdir, 'enti')
+    SCHEMA_DIR = os.path.abspath(os.path.join(SRC_ROOT,'schema'))
+
+    ATTR_SCHEMA_FILE = os.path.join(SCHEMA_DIR,'attributes.yml')
+
 class DBConfig:
     DB_TYPE = os.environ.get('DATABASE_TYPE', 'mysql')
-    DB_NAME = os.environ.get('DATABASE_NAME', 'app')
+    DB_NAME = os.environ.get('DATABASE_NAME', 'enti')
     DB_HOST = os.environ.get('DATABASE_HOST', 'mysql')
     DB_PORT = os.environ.get('DATABASE_PORT', '3306')
     DB_USER = os.environ.get('DATABASE_USER', 'root')
@@ -32,7 +38,7 @@ class CeleryConfig:
     BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379')
     BACKEND_URL = os.environ.get('CELERY_BACKEND_URL', 'redis://redis:6379')
 
-class AppConfig(CeleryConfig, DBConfig, UIConfig):
+class AppConfig(CeleryConfig, DBConfig, UIConfig, SchemaConfig, SynthesysConfig):
     MODE = os.environ.get('MODE', 'development')
     SERVER_HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
     SERVER_PORT = os.environ.get('SERVER_PORT', 5100)

@@ -1,0 +1,500 @@
+---
+  num_employees:
+    type: integer
+    name: Number of Employees
+    ko_name: KONUMEMPLOYEES
+    description: the number of employees for this entity
+    arity: ONE
+    fields:
+      - v
+  
+  employed_by:
+    type: entity
+    name: Employed By
+    ko_name: KOEMP
+    description: an employer for this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+
+  employs:
+    type: entity
+    name: Employs
+    ko_name: null
+    description: an employee for this entity
+    arity: MANY
+    fields:
+      - sid
+      - source
+  
+  member_of:
+    type: entity
+    name: Member Of
+    ko_name: KOMEM
+    description: a group or organization of which this entity is a member
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  founded:
+    type: entity
+    name: Founded
+    ko_name: KOFOUNDER
+    description: an organization that this entity founded
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  founded_by:
+    type: entity
+    name: Founded By
+    ko_name: KOFOUNDEDBY
+    description: the entity that founded this organization
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  affiliate:
+    type: entity
+    name: Affiliate
+    ko_name: KOAFFILIATE
+    description: an entity that is affiliated with this organization
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  affiliated_with:
+    type: entity
+    name: Affiliated With
+    ko_name: KOAFFILIATEDTO
+    description: an organization that this entity is affiliated with
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  killed_by:
+    type: entity
+    name: Killed By
+    ko_name: KOKILLEDBY
+    description: an entity that killed this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  spouse:
+    type: entity
+    name: Spouse
+    ko_name: KOSPOUSE
+    description: a spouse of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  son:
+    type: entity
+    name: Son
+    ko_name: KOSON
+    description: a son of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  daughter:
+    type: entity
+    name: Daughter
+    ko_name: KODAUGHTER
+    description: a daughter of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  father:
+    type: entity
+    name: Father
+    ko_name: KOFATHER
+    description: the biological father of this entity
+    arity: ONE
+    fields:
+      - sid
+      - source
+  
+  mother:
+    type: entity
+    name: Mother
+    ko_name: KOMOTHER
+    description: the biological mother of this entity
+    arity: ONE
+    fields:
+      - sid
+      - source
+  
+  parent:
+    type: entity
+    name: Parent
+    ko_name: KOPARENT
+    description: a parent of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  child:
+    type: entity
+    name: Child
+    ko_name: KOCHILD
+    description: a child of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+      
+  brother:
+    type: entity
+    name: Brother
+    ko_name: KOBROTHER
+    description: a brother of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  sister:
+    type: entity
+    name: Sister
+    ko_name: KOSISTER
+    description: a sister of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  sibling:
+    type: entity
+    name: Sibling
+    ko_name: KOSIBLING
+    description: a sibling of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  uncle:
+    type: entity
+    name: Uncle
+    ko_name: KOUNCLE
+    description: an uncle of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  aunt:
+    type: entity
+    name: Aunt
+    ko_name: KOAUNT
+    description: an aunt of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  cousin:
+    type: entity
+    name: Cousin
+    ko_name: KOCOUSIN
+    description: a cousin of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  related:
+    type: entity
+    name: Related To
+    ko_name: KORELATED
+    description: a familial relation of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  org_parent:
+    type: entity
+    name: Parent Organization
+    ko_name: KOPARENTORG
+    description: a parent organization of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  org_child:
+    type: entity
+    name: Child Organization
+    ko_name: KOCHILDORG
+    description: a child organization of this entity
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  attended_school:
+    type: entity
+    name: School Attended
+    ko_name: KOSCHOOLATTENDED
+    description: a school that this entity attended
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  principal:
+    type: entity
+    name: Principal
+    ko_name: KOPRINCIPAL
+    description: an entity that is a principal member of this organization
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  principal_for:
+    type: entity
+    name: Principal For
+    ko_name: KOPRINCIPALAT
+    description: an organization for which this entity is a principal member
+    arity: FEW
+    fields:
+      - sid
+      - source
+  
+  documents:
+    type: named-reference
+    name: Document
+    ko_name: KODOCUMENT
+    description: associated documents
+    arity: MANY
+    fields:
+      - id-type
+      - id-seed
+      - name
+  
+  birth_date:
+    type: date
+    name: Birth Date
+    ko_name: KOBIRTHDATE
+    description: date of birth
+    arity: ONE
+    fields:
+      - v
+  
+  death_date:
+    type: date
+    name: Death Date
+    ko_name: KODEATHDATE
+    description: date of death
+    arity: ONE
+    fields:
+      - v
+  
+  founded_date:
+    type: date
+    name: Founded Date
+    ko_name: KOFOUNDEDDATE
+    description: date an organization was founded
+    arity: ONE
+    fields:
+      - v
+  
+  dissolved_date:
+    type: date
+    name: Dissolved Date
+    ko_name: KODISSOLVEDDATE
+    description: date an organization was dissolved
+    arity: ONE
+    fields:
+      - v
+    enum:
+      - M
+      - F
+      
+  gender:
+    type: string
+    name: Gender
+    ko_name: KOGENDER
+    description: an enumeration identifying gender
+    arity: ONE
+    fields:
+      - v
+  
+  cause_of_death:
+    type: string
+    name: Cause of Death
+    ko_name: KOCAUSEOFDEATH
+    description: the cause of death for this entity
+    arity: ONE
+    fields:
+      - v
+  
+  alias:
+    type: string
+    name: Alias
+    ko_name: KOALIAS
+    description: an alias for this entity
+    arity: FEW
+    fields:
+      - v
+  
+  website:
+    type: string
+    name: Website
+    ko_name: KOWEBSITE
+    description: website address for this entity
+    arity: FEW
+    fields:
+      - v
+  
+  phone:
+    type: string
+    name: Phone Number
+    ko_name: KOCONTACTNUMBER
+    description: phone number for this entity
+    arity: ONE
+    fields:
+      - v
+  
+  dissolved_at:
+    type: string
+    name: Dissolved At
+    ko_name: KODISSOLVEDPLACE
+    description: the location where the entity was dissolved
+    arity: ONE
+    fields:
+      - v
+  
+  founded_at:
+    type: string
+    name: Founded At
+    ko_name: KOFOUNDEDPLACE
+    description: the location where the entity was founded
+    arity: ONE
+    fields:
+      - v
+  
+  birth_location:
+    type: string
+    name: Birth Location
+    ko_name: KOBIRTHPLACE
+    description: the location where the entity was born
+    arity: ONE
+    fields:
+      - v
+  
+  death_location:
+    type: string
+    name: Death Location
+    ko_name: KODEATHPLACE
+    description: the location where the entity died
+    arity: ONE
+    fields:
+      - v
+  
+  residence:
+    type: string
+    name: Residence
+    ko_name: KORESIDENCE
+    description: the location where this entity resides
+    arity: FEW
+    fields:
+      - v
+  
+  hq_located_at:
+    type: string
+    name: HQ Location
+    ko_name: KOHQLOCATION
+    description: location where an organization is based
+    arity: ONE
+    fields:
+      - v
+  
+  context:
+    type: string
+    name: Context
+    ko_name: null
+    description: word that appears frequently in context with this entity
+    arity: FEW
+    fields:
+      - v
+  
+  ssn:
+    type: string
+    name: Social Security Number
+    ko_name: KOSSN
+    description: social security number
+    arity: ONE
+    fields:
+      - v
+  
+  nationality:
+    type: string
+    name: Nationality
+    ko_name: KONAT
+    description: country of residence
+    arity: FEW
+    fields:
+      - v
+  
+  title:
+    type: string
+    name: Title
+    ko_name: KOTIT
+    description: a job title or honorific
+    arity: FEW
+    fields:
+      - v
+  
+  location:
+    type: string
+    name: Location
+    ko_name: KOLOC
+    description: a location where this identity was identified
+    arity: MANY
+    fields:
+      - v
+  
+  ethnicity:
+    type: string
+    name: Ethnicity
+    ko_name: KOETH
+    description: ethnicity or heritage
+    arity: FEW
+    fields:
+      - v
+  
+  religion:
+    type: string
+    name: Religion
+    ko_name: KOREL
+    description: a religion for this entity
+    arity: FEW
+    fields:
+      - v
+  
+  email:
+    type: string
+    name: Email Address
+    ko_name: KOEMAIL
+    description: an email address for this entity
+    arity: FEW
+    fields:
+      - v

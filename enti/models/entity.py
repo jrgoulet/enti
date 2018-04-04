@@ -10,7 +10,7 @@ class Entity(Base):
     __tablename__ = 'Entity'
     id = Column(String(128), primary_key=True)
     name = Column(String(256), nullable=False)
-    type = Column(Integer, ForeignKey('EntityType.id'), nullable=False)
+    type = Column(String(128), ForeignKey('EntityType.id'), nullable=False)
     canonical = Column(Boolean, nullable=False)
 
     def __init__(self, name, type, canonical, id=None):
@@ -28,6 +28,14 @@ class Entity(Base):
             'canonical': self.canonical
         }
 
+class EntityAttribute(Base):
+    """Attributes that are tied to Entities"""
+
+    __tablename__ = 'EntityAttribute'
+    id = Column(String(128), primary_key=True)
+    entity_id = Column(String(128), ForeignKey('Entity.id'), nullable=False)
+    attribute_id = Column(String(128), ForeignKey('Attribute.id'), nullable=False)
+
 class EntityType(Base):
     """Enumeration of recognized entity types"""
 
@@ -43,7 +51,7 @@ class EntityType(Base):
     ACADEMIC = 9
 
     __tablename__ = 'EntityType'
-    id = Column(Integer, primary_key=True)
+    id = Column(String(128), primary_key=True)
     name = Column(String(128), nullable=False)
 
     def __init__(self, id, name):

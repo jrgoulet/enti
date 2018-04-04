@@ -1,6 +1,7 @@
 from io import StringIO
 import xml.etree.ElementTree as ET
 from pprint import pprint
+import yaml
 
 ENTITIES_TAG = 'entities'
 ENTITY_TAG = 'entity'
@@ -16,6 +17,13 @@ def run():
 
     else:
         print('Invalid XML document. Expected tag <{}>, but read <{}>'.format(ENTITIES_TAG, root.tag))
+
+def load_yml(filename):
+    """Loads a YML document"""
+    with open(filename) as f:
+        yml = yaml.safe_load(f)
+        pprint(yml)
+        return yml
 
 
 def load_xml(filename):
@@ -70,7 +78,7 @@ def extract_attributes():
     pprint(attributes)
 
 
-def build_xml():
+def build_entity_xml():
     entities = run()
 
     root_attrs = {
@@ -107,11 +115,13 @@ def build_xml():
             val_node = ET.SubElement(node, k)
 
             for val in v:
-                ET.SubElement(val_node, "value", val)
+                ET.SubElement(val_node, 'value', val)
 
     tree = ET.ElementTree(root)
-    tree.write('../../res/out.xml', encoding="utf-8", xml_declaration=True)
+    tree.write('../../res/out.xml', encoding='utf-8', xml_declaration=True)
 
 
 if __name__ == '__main__':
-    build_xml()
+    # run()
+    # build_entity_xml()
+    load_yml('../schema/attributes.yml')

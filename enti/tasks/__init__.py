@@ -1,6 +1,6 @@
 from enti.database import init_db
 from enti.extensions import celery, log
-
+from .initialization import initialize_defaults, initialize_attributes
 
 @celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):

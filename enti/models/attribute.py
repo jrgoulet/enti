@@ -10,31 +10,68 @@ class Attribute(Base):
     __tablename__ = 'Attribute'
     id = Column(String(128), primary_key=True)
     name = Column(String(128), nullable=False)
-    display_name = Column(String(128), nullable=False)
+    ko_name = Column(String(128), nullable=True)
     description = Column(String(256), nullable=True)
     required = Column(Boolean, default=False, nullable=False)
-    arity = Column(Integer, ForeignKey('ArityType.id'), nullable=False)
-    type = Column(Integer, ForeignKey('AttributeType.id'), nullable=False)
+    arity_id = Column(String(128), ForeignKey('ArityType.id'), nullable=False)
+    type_id = Column(String(128), ForeignKey('AttributeType.id'), nullable=False)
 
-    def __init__(self, name, required, arity, display_name, description, type, id=None):
+    def __init__(self, name, required, arity, ko_name, description, type, id=None):
         self.id = id if id is not None else generate_uuid()
         self.name = name
         self.required = required
-        self.arity = arity
-        self.display_name = display_name
+        self.arity_id = arity
+        self.ko_name = ko_name
         self.description = description
-        self.type = type
+        self.type_id = type
 
     def json(self):
         return {
             'id': self.id,
             'name': self.name,
             'required': self.required,
-            'arity': self.arity,
-            'display_name': self.display_name,
+            'arity': self.arity_id,
+            'ko_name': self.ko_name,
             'description': self.description,
-            'type': self.type
+            'type': self.type_id
         }
+
+class AttributeField(Base):
+    """Field that holds a contextual value for a given attribute"""
+
+    __tablename__ = 'AttributeField'
+    id = Column(String(128), primary_key=True)
+    name = Column(String(128), nullable=False)
+
+    def __init__(self, id, name):
+        self.id = id,
+        self.name = name
+
+    def json(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
+
+class LinkedAttributeField(Base):
+
+    __tablename__ = 'LinkedAttributeField'
+    id = Column(String(128), primary_key=True)
+    attribute_id = Column(String(128), ForeignKey('Attribute.id'), nullable=False)
+    field_id = Column(String(128), ForeignKey('AttributeField.id'), nullable=False)
+
+    def __init__(self, attribute_id, field_id):
+        self.id = '{}_{}'.format(attribute_id, field_id)
+        self.attribute_id = attribute_id
+        self.field_id = field_id
+
+    def json(self):
+        return {
+            'id': self.id,
+            'attribute_id': self.attribute_id,
+            'field_id': self.field_id
+        }
+
 
 
 class AttributeType(Base):
@@ -48,7 +85,7 @@ class AttributeType(Base):
     STRING = 5
 
     __tablename__ = 'AttributeType'
-    id = Column(Integer, primary_key=True)
+    id = Column(String(128), primary_key=True)
     name = Column(String(128), nullable=False)
 
     def __init__(self, id, name):
@@ -69,7 +106,7 @@ class ArityType(Base):
     MANY = 3
 
     __tablename__ = 'ArityType'
-    id = Column(Integer, primary_key=True)
+    id = Column(String(128), primary_key=True)
     name = Column(String(128), nullable=False)
 
     def __init__(self, id, name):

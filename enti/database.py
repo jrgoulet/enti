@@ -56,6 +56,7 @@ def init_db():
                     model.__table__.create(engine)
 
             initialized = True
+            log.info('Database initialized')
 
         except Exception as e:
             # log.exception(e)
