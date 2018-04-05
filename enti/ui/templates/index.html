@@ -21,10 +21,21 @@
                         {% include 'sidebar.html' %}
                     </div>
                     <div class="col-md-10">
-                        {% include 'directory.html' %}
-                        {% include 'editor.html' %}
-                        {% include 'import.html' %}
-                        {% include 'export.html' %}
+                        <div ng-show="view=='default'">
+                            {% include 'default.html' %}
+                        </div>
+                        <div ng-show="view=='directory'">
+                            {% include 'directory.html' %}
+                        </div>
+                        <div ng-show="view=='editor'">
+                            {% include 'editor.html' %}
+                        </div>
+                        <div ng-show="view=='import'">
+                            {% include 'import.html' %}
+                        </div>
+                        <div ng-show="view=='export'">
+                            {% include 'export.html' %}
+                        </div>
                     </div>
                 </div>
             </div>

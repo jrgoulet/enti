@@ -35,6 +35,13 @@ class EntityAttribute(Base):
     id = Column(String(128), primary_key=True)
     entity_id = Column(String(128), ForeignKey('Entity.id'), nullable=False)
     attribute_id = Column(String(128), ForeignKey('Attribute.id'), nullable=False)
+    linked_field_id = Column(String(128), ForeignKey('LinkedAttributeField.id'), nullable=False)
+    value = Column(String(2048), nullable=False)
+
+    def __init__(self, entity_id, attribute_id, linked_field_id, value):
+        self.id = '{}_{}'.format(attribute_id, linked_field_id)
+        self.entity_id = entity_id
+        self.value = value
 
 class EntityType(Base):
     """Enumeration of recognized entity types"""

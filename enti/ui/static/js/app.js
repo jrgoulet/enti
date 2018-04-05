@@ -7,6 +7,7 @@ define([
 	'use strict';
 
 	return ng.module('app', [
+	    'angularFileUpload',
 		'app.controllers',
 		'app.filters',
 		'app.services',

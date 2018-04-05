@@ -73,3 +73,7 @@ class Query:
         @staticmethod
         def all(session):
             return session.query(LinkedAttributeField).all()
+
+        @staticmethod
+        def filter(session, attribute_id):
+            return session.query(LinkedAttributeField).filter(LinkedAttributeField.attribute_id == attribute_id)

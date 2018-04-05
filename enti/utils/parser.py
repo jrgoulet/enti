@@ -7,8 +7,8 @@ ENTITIES_TAG = 'entities'
 ENTITY_TAG = 'entity'
 
 
-def run():
-    root = load_xml('../../res/example2.xml')
+def run_entity_extraction(filename):
+    root = load_xml(filename)
 
     print('<{}:{}>'.format(root.tag, root.attrib))
 
@@ -79,7 +79,7 @@ def extract_attributes():
 
 
 def build_entity_xml():
-    entities = run()
+    entities = run_entity_extraction('../../res/enam.xml')
 
     root_attrs = {
         'xmlns': 'digitalreasoning.com/entity/definitions',

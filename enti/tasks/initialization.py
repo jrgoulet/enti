@@ -4,7 +4,7 @@ from enti.database import session_scope
 from enti.extensions import celery, log
 from enti.definitions import AttributeTypes, EntityTypes, ArityTypes, AttributeFields
 from enti.utils.parser import load_yml
-from enti.settings import SchemaConfig
+from enti.settings import FileConfig
 from enti.models import Attribute, LinkedAttributeField
 from enti.query import Query
 
@@ -38,7 +38,7 @@ def initialize_attributes():
 
     with session_scope() as session:
 
-        attr_templates = load_yml(SchemaConfig.ATTR_SCHEMA_FILE)
+        attr_templates = load_yml(FileConfig.ATTR_SCHEMA_FILE)
 
         for attr_id, attr_template in attr_templates.items():
 
@@ -58,8 +58,7 @@ def initialize_attributes():
                     session.add(attribute)
 
                 else:
-                    log.info('Attribute exists, updating: {}'.format(attribute.name))
-                    session.update(attribute)
+                    log.info('Attribute exists, skipping: {}'.format(attribute.name))
 
                 for field_id in attr_template['fields']:
 

@@ -1,5 +1,6 @@
 define([
-	'./IOSvc',
-	'./NotificationSvc'
+    './AttributeSvc',
+    './IOSvc',
+    './NotificationSvc'
 ], function () {
 });

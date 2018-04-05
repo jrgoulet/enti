@@ -4,6 +4,7 @@ define([
 	'moment',
 	'angular-animate',
 	'angularMoment',
+	'angular-file-upload',
 	'notify',
 	'app'
 	/* routes */
