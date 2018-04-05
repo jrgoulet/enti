@@ -1,4 +1,4 @@
-from enti.tasks import initialize_defaults, initialize_attributes
+from enti.tasks import initialize_defaults, initialize_attributes, import_entities
 from enti.query import Query
 from enti.database import session_scope
 from enti.settings import FileConfig
@@ -42,8 +42,8 @@ class Controller:
                 if f.endswith(".xml"):
                     entities = run_entity_extraction(filename)
                     if entities is not None:
-                        log.info('Entity extraction successful')
-                        pprint(entities)
+                        log.info('Entity extraction successful, starting import')
+                        import_entities(entities)
                 os.remove(filename)
 
 

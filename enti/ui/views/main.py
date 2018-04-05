@@ -82,7 +82,7 @@ def sync_attributes(null):
     emit('attribute.sync', controller.sync_attributes())
 
 @socketio.on('xml.upload', namespace='/')
-def upload_xml():
+def upload_xml(null):
 
     controller.upload_xml()
 

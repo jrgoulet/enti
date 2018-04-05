@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import Column, String, Boolean, Integer, ForeignKey
+from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, Unicode, UniqueConstraint
 from .base import Base
 from enti.utils import generate_uuid
 
@@ -36,11 +36,13 @@ class EntityAttribute(Base):
     entity_id = Column(String(128), ForeignKey('Entity.id'), nullable=False)
     attribute_id = Column(String(128), ForeignKey('Attribute.id'), nullable=False)
     linked_field_id = Column(String(128), ForeignKey('LinkedAttributeField.id'), nullable=False)
-    value = Column(String(2048), nullable=False)
+    value = Column(Unicode(2048, collation='utf8mb4_unicode_ci'), nullable=True)
 
     def __init__(self, entity_id, attribute_id, linked_field_id, value):
-        self.id = '{}_{}'.format(attribute_id, linked_field_id)
+        self.id = '{}_{}_{}'.format(entity_id, linked_field_id, generate_uuid())
         self.entity_id = entity_id
+        self.attribute_id = attribute_id
+        self.linked_field_id = linked_field_id
         self.value = value
 
 class EntityType(Base):
