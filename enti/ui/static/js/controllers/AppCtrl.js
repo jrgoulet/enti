@@ -2,12 +2,14 @@ define(['./module'], function (controllers) {
     'use strict';
 
     controllers.controller('AppCtrl', ['$rootScope', '$http', '$scope', '$window', 'moment', 'IOSvc', 'AttributeSvc',
-		'NotificationSvc', 'FileUploader',
-        function ($rootScope, $http, $scope, $window, moment, io, attrSvc, n, FileUploader) {
+		'EntitySvc', 'NotificationSvc', 'FileUploader',
+        function ($rootScope, $http, $scope, $window, moment, io, attrSvc, entitySvc, n, FileUploader) {
 
             console.log('AppCtrl');
 
             $scope.attributes = {};
+            $scope.entities = {};
+
             $scope.view = 'default';
             $scope.uploader = new FileUploader();
 
@@ -61,6 +63,10 @@ define(['./module'], function (controllers) {
                $scope.attributes = attrSvc.sync(attributes);
             });
 
+            io.on('entity.sync', function(entities) {
+               $scope.entities = entitySvc.sync(entities);
+            });
+
             io.on('success', function (message) {
                 console.log('success: ' + message.message);
                 n.info(message.title, message.message);
@@ -84,6 +90,6 @@ define(['./module'], function (controllers) {
             //////////////////////////////////////////////////
 
             io.emit('attribute.sync', null);
-
+            io.emit('entity.sync', null);
         }])
 });

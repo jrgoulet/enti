@@ -1,5 +1,5 @@
 from .attribute import Attribute, AttributeType, ArityType, AttributeField, LinkedAttributeField
-from .entity import Entity, EntityType, EntityAttribute
+from .entity import Entity, EntityType, EntityAttribute, EntityAttributeField
 
 MODELS = [
     AttributeType,
@@ -9,5 +9,6 @@ MODELS = [
     LinkedAttributeField,
     EntityType,
     Entity,
-    EntityAttribute
+    EntityAttribute,
+    EntityAttributeField
 ]

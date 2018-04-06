@@ -1,4 +1,5 @@
-from enti.models import AttributeType, ArityType, Attribute, EntityType, Entity, AttributeField, LinkedAttributeField, EntityAttribute
+from enti.models import AttributeType, ArityType, Attribute, EntityType, Entity, AttributeField, LinkedAttributeField, \
+    EntityAttribute, EntityAttributeField
 
 
 class Query:
@@ -57,10 +58,13 @@ class Query:
             return session.query(EntityAttribute).all()
 
         @staticmethod
-        def filter(session, entity_id, linked_field_id):
+        def filter(session, entity_id, attribute_id=None):
+            if attribute_id is None:
+                return session.query(EntityAttribute).filter(EntityAttribute.entity_id == entity_id)
+
             return session.query(EntityAttribute).filter(
                 EntityAttribute.entity_id == entity_id,
-                EntityAttribute.linked_field_id == linked_field_id
+                EntityAttribute.attribute_id == attribute_id
             )
 
     class AttributeField:
@@ -86,6 +90,26 @@ class Query:
             if field_id is not None:
                 return session.query(LinkedAttributeField).filter(
                     LinkedAttributeField.attribute_id == attribute_id,
-                    AttributeField.id == field_id
+                    LinkedAttributeField.field_id == field_id
                 ).first()
             return session.query(LinkedAttributeField).filter(LinkedAttributeField.attribute_id == attribute_id)
+
+    class EntityAttributeField:
+        @staticmethod
+        def get(session, id):
+            return session.query(EntityAttributeField).get(id)
+
+        @staticmethod
+        def all(session):
+            return session.query(EntityAttributeField).all()
+
+        @staticmethod
+        def filter(session, entity_attribute_id, linked_field_id=None):
+                if linked_field_id is None:
+                    return session.query(EntityAttributeField).filter(
+                        EntityAttributeField.entity_attribute_id == entity_attribute_id)
+                return session.query(EntityAttributeField).filter(
+                    EntityAttributeField.entity_attribute_id == entity_attribute_id,
+                    EntityAttributeField.linked_field_id == linked_field_id
+                ).first()
+

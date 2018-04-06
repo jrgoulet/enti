@@ -43,6 +43,7 @@ def extract_entities(node):
         if child.tag == ENTITY_TAG:
             entities.append(extract_entity(child))
 
+    pprint(entities)
     return entities
 
 

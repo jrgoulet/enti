@@ -5,12 +5,27 @@ from enti.extensions import celery, log
 from enti.definitions import AttributeTypes, EntityTypes, ArityTypes, AttributeFields
 from enti.utils.parser import load_yml
 from enti.settings import FileConfig
-from enti.models import Attribute, LinkedAttributeField, Entity, EntityType, EntityAttribute
+from enti.models import Attribute, LinkedAttributeField, Entity, EntityType, EntityAttribute, EntityAttributeField
 from enti.query import Query
+
+
+@celery.task()
+def clean_empty_entity_attrs():
+
+    with session_scope() as session:
+
+        entity_attrs = Query.EntityAttribute.all(session)
+
+        for entity_attr in entity_attrs:
+
+            fields = Query.EntityAttributeField.filter(session, entity_attribute_id=entity_attr.id)
+
+            if len(fields) == 0:
+                log.info('Removing empty Entity Attribute: {} ({})'.format(entity_attr.id, entity_attr.entity_id))
+                session.delete(entity_attr)
 
 @celery.task()
 def import_entities(entities_json):
-
     log.info('Importing entities')
 
     with session_scope() as session:
@@ -22,7 +37,7 @@ def import_entities(entities_json):
             if entity is None:
                 if Query.EntityType.get(session, e['type']) is None:
                     session.add(EntityType(id=e['type'],
-                                           name=e['type'].replace('_',' ').title()))
+                                           name=e['type'].replace('_', ' ').title()))
                 entity = Entity(id=e['id'],
                                 name=e['name'],
                                 type=e['type'],
@@ -37,13 +52,12 @@ def import_entities(entities_json):
                 entity.canonical = e['canonical']
                 log.info('Updating {} entity {} (id: {})'.format(entity.type, entity.name, entity.id))
 
-
             for a in e['attributes']:
                 attr_id = a.pop('id', None)
                 attribute = Query.Attribute.get(session, attr_id)
 
                 if attribute is None:
-                    log.error('Entity attribute {} for entity {} is undefined, skipping.'.format(attr_id, entity_id))
+                    # log.error('Entity attribute {} for entity {} is undefined, skipping.'.format(attr_id, entity_id))
 
                     if a.get('sid') is not None:
                         attr_type = 'entity'
@@ -62,34 +76,53 @@ def import_entities(entities_json):
                     for field_id in a.keys():
                         session.add(LinkedAttributeField(attr_id, field_id))
 
-                for field_id, value in a.items():
-                    field = Query.AttributeField.get(session, field_id)
+                existing_attrs = Query.EntityAttribute.filter(session, entity_id, attr_id)
+                duplicate = False
 
-                    if field is None:
-                        log.error('Undefined field {} for attribute {} for entity {}, skipping.'.format(field_id, attr_id, entity_id))
+                for existing_attr in existing_attrs:
+                    if duplicate:
+                        break
 
-                    else:
-                        linked_field = Query.LinkedAttributeField.filter(session, attr_id, field_id)
+                    matches = 0
+                    num_fields = len(a)
 
-                        if linked_field is None:
+                    for field_id, value in a.items():
+                        field = Query.AttributeField.get(session, field_id)
+
+                        if field is not None:
+                            linked_field = Query.LinkedAttributeField.filter(session, attr_id, field_id)
+                            existing_attr_field = Query.EntityAttributeField.filter(session, existing_attr.id,
+                                                                                    linked_field.id)
+
+                            if existing_attr_field is not None and existing_attr_field.value == value:
+                                matches += 1
+
+                    if matches == num_fields:
+                        log.info('Duplicate field identified, skipping.')
+                        duplicate = True
+
+                if not duplicate:
+
+                    entity_attr = EntityAttribute(entity_id, attr_id)
+                    session.add(entity_attr)
+
+                    for field_id, value in a.items():
+                        field = Query.AttributeField.get(session, field_id)
+
+                        if field is None:
                             log.error(
-                                'Field {} not allowed for attribute {} for entity {}, skipping.'.format(field_id,
-                                                                                                      attr_id,
+                                'Undefined field {} for attribute {} for entity {}, skipping.'.format(field_id, attr_id,
                                                                                                       entity_id))
+
                         else:
-                            # TODO: Arity enforcement
-                            existing_attrs = Query.EntityAttribute.filter(session, entity_id, linked_field.id)
+                            linked_field = Query.LinkedAttributeField.filter(session, attr_id, field_id)
 
-                            duplicate = False
-
-                            # Can't make unique key constraints with UTF8MB4 fields, so we check here for duplicates
-                            for existing_attr in existing_attrs:
-                                if existing_attr.value == value:
-                                    duplicate = True
-
-                            if not duplicate:
-                                entity_attr = EntityAttribute(entity_id, attr_id, linked_field.id, value)
-                                session.add(entity_attr)
-
+                            if linked_field is None:
+                                log.error(
+                                    'Field {} not allowed for attribute {} for entity {}, skipping.'.format(field_id,
+                                                                                                            attr_id,
+                                                                                                            entity_id))
                             else:
-                                log.info('Skipped duplicate attribute {}:{} for entity {}'.format(attr_id, value, entity_id))
+                                # TODO: Arity enforcement
+                                ea_field = EntityAttributeField(entity_attr.id, linked_field.id, value)
+                                session.add(ea_field)

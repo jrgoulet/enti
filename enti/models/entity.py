@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, Unicode, UniqueConstraint
+from sqlalchemy.orm import relationship, backref
 from .base import Base
 from enti.utils import generate_uuid
 
@@ -35,15 +36,45 @@ class EntityAttribute(Base):
     id = Column(String(128), primary_key=True)
     entity_id = Column(String(128), ForeignKey('Entity.id'), nullable=False)
     attribute_id = Column(String(128), ForeignKey('Attribute.id'), nullable=False)
+
+    field = relationship("EntityAttributeField",cascade="all, delete-orphan")
+
+    def __init__(self, entity_id, attribute_id):
+        self.id = generate_uuid()
+        self.entity_id = entity_id
+        self.attribute_id = attribute_id
+
+
+    def json(self):
+        return {
+            'id': self.id,
+            'entity_id': self.entity_id,
+            'attribute_id': self.attribute_id,
+        }
+
+
+class EntityAttributeField(Base):
+    """Fields that are tied to EntityAttributes"""
+
+    __tablename__ = 'EntityAttributeField'
+    id = Column(String(128), primary_key=True)
+    entity_attribute_id = Column(String(128), ForeignKey('EntityAttribute.id'), nullable=False)
     linked_field_id = Column(String(128), ForeignKey('LinkedAttributeField.id'), nullable=False)
     value = Column(Unicode(2048, collation='utf8mb4_unicode_ci'), nullable=True)
 
-    def __init__(self, entity_id, attribute_id, linked_field_id, value):
-        self.id = '{}_{}_{}'.format(entity_id, linked_field_id, generate_uuid())
-        self.entity_id = entity_id
-        self.attribute_id = attribute_id
+    def __init__(self, entity_attribute_id, linked_field_id, value):
+        self.id = generate_uuid()
+        self.entity_attribute_id = entity_attribute_id
         self.linked_field_id = linked_field_id
         self.value = value
+
+    def json(self):
+        return {
+            'id': self.id,
+            'entity_attribute_id': self.entity_attribute_id,
+            'linked_field_id': self.linked_field_id,
+            'value': self.value
+        }
 
 class EntityType(Base):
     """Enumeration of recognized entity types"""

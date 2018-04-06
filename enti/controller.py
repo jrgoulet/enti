@@ -33,6 +33,43 @@ class Controller:
 
             return attr_json
 
+    def sync_entities(self):
+
+        with session_scope() as session:
+
+            entity_json = {e.id:e.json() for e in Query.Entity.all(session)}
+
+            for entity_id in entity_json.keys():
+                attrs = {}
+
+                for e_attr in [e.json() for e in Query.EntityAttribute.filter(session, entity_id)]:
+
+                    attr = Query.Attribute.get(session, e_attr['attribute_id'])
+                    attr_json = attr.json()
+
+                    e_attr['fields'] = []
+
+                    fields = [f.json() for f in Query.EntityAttributeField.filter(session, e_attr['id'])]
+
+                    for field in fields:
+                        lf = Query.LinkedAttributeField.get(session, field['linked_field_id']).json()
+                        af = Query.AttributeField.get(session, lf['field_id']).json()
+
+                        field['name'] = af['name']
+                        e_attr['fields'].append(field)
+
+                    if attrs.get(e_attr['attribute_id']) is None:
+
+                        attr_json['data'] = [e_attr]
+                        attrs[attr.id] = attr_json
+
+                    else:
+                        attrs[e_attr['attribute_id']]['data'].append(e_attr)
+
+                entity_json[entity_id]['attributes'] = attrs
+
+            return entity_json
+
 
     def upload_xml(self):
 

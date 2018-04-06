@@ -81,6 +81,12 @@ def sync_attributes(null):
 
     emit('attribute.sync', controller.sync_attributes())
 
+@socketio.on('entity.sync', namespace='/')
+def sync_attributes(null):
+
+    emit('entity.sync', controller.sync_entities())
+
+
 @socketio.on('xml.upload', namespace='/')
 def upload_xml(null):
 
