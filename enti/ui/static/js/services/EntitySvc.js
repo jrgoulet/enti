@@ -7,14 +7,20 @@ define(['./module'], function (services) {
 
 			return {
 				entities: entities,
+                syncAll: syncAll,
                 sync: sync
 			};
 
 			//////////////////////////////////////////////////
 
-            function sync(data) {
+            function syncAll(data) {
                 entities = data;
                 return entities;
+            }
+
+            function sync(entity) {
+                entities[entity.id] = entity;
+                return entity;
             }
 
 

@@ -17,6 +17,121 @@ body * {
   box-sizing: border-box;
 }
 
+.entity-container {
+    margin-bottom: 10px;
+    background-color: #2b3940;
+    border: 1px solid #2b3940;
+    border-radius: 7px;
+    padding: 0;
+}
+
+.entity-action-button {
+    height: 25px;
+    font-size: 12px;
+    line-height: 25px;
+    padding: 0 15px;
+    border-radius: 3px;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.entity-container-h1 {
+    font-size: 17px;
+    font-weight: 500 !important;
+    color: #2b3940;
+}
+
+.attribute-remove-button {
+    position:relative;
+    top:3px;
+}
+
+.bold {
+    font-weight: 500 !important;
+}
+
+.v-pad-10 {
+    padding: 10px 0;
+}
+
+.mb-7 {
+    margin-bottom: 7px;
+}
+
+.lh-40 {
+    line-height: 40px;
+}
+
+.entity-container-header {
+    border-bottom: 1px solid darkgrey;
+    margin: 10px 0;
+}
+
+.entity-name {
+    font-size: 20px;
+    font-weight: 500 !important;
+    color: #fff;
+}
+
+.entity-type {
+    font-size: 16px;
+    color: #ccc;
+    text-transform: uppercase;
+    margin-left: 10px;
+}
+
+
+.entity-id {
+    font-size: 20px;
+    color: lightcyan;
+}
+
+.entity-container-body {
+    background-color: #FFF;
+    padding: 10px 0;
+    margin: 10px 0;
+    margin-top: -8px;
+}
+
+.entity-container-footer {
+    background-color: #FFF;
+    padding: 2px 0;
+    margin: 10px 0;
+    margin-top: -9px;
+}
+
+.entity-container-panel {
+    background-color: #FFF;
+    padding: 20px 0;
+    margin: 10px 0;
+    margin-top: -9px;
+}
+
+.entity-attribute-container {
+    font-family: "Roboto", "Open Sans", sans-serif;
+    color: rgb(44, 44, 44);
+    font-weight: 400 !important;
+    letter-spacing: 0.3px !important;
+}
+
+.attribute-name {
+    font-size: 16px;
+    line-height: 40px;
+}
+
+.attribute-field-container {
+    padding: 3px 0;
+    border-radius: 5px;
+}
+
+.attribute-field-name {
+    color: dimgray;
+    font-weight: 500 !important;
+}
+
+.attribute-field-value {
+
+}
+
 .enti-sidebar {
     height: 800px;
     overflow-y:visible;
@@ -385,6 +500,10 @@ label {
 .spinner .rect5 {
 	-webkit-animation-delay: -0.8s;
 	animation-delay: -0.8s;
+}
+
+.lh-35 {
+    line-height: 35px;
 }
 
 @-webkit-keyframes sk-stretchdelay {

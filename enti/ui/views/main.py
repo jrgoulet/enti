@@ -81,10 +81,10 @@ def sync_attributes(null):
 
     emit('attribute.sync', controller.sync_attributes())
 
-@socketio.on('entity.sync', namespace='/')
+@socketio.on('entity.sync.all', namespace='/')
 def sync_attributes(null):
 
-    emit('entity.sync', controller.sync_entities())
+    emit('entity.sync.all', controller.sync_entities())
 
 
 @socketio.on('xml.upload', namespace='/')
@@ -92,3 +92,53 @@ def upload_xml(null):
 
     controller.upload_xml()
 
+@socketio.on('attribute.update', namespace='/')
+def update_attribute(data):
+    log.info('Updating attribute', extra=data)
+
+    entity_id = data.get('entityId')
+    field_id = data.get('fieldId')
+    value = data.get('value')
+
+    if value is None or len(value) == 0:
+
+        emit('danger', {'title':'Invalid Request', 'message': 'The field cannot be empty. Please try again'})
+
+    else:
+        try:
+            controller.update_attribute(field_id, value)
+            emit('entity.sync', controller.sync_entity(entity_id))
+
+        except Exception as e:
+            emit('danger', {'title': 'Error', 'message': str(e)})
+
+@socketio.on('attribute.remove', namespace='/')
+def remove_attribute(data):
+
+    log.info('Removing attribute', extra=data)
+
+    entity_id = data.get('entityId')
+    attribute_id = data.get('attributeId')
+
+    try:
+        controller.remove_attribute(attribute_id)
+        emit('entity.sync', controller.sync_entity(entity_id))
+
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})
+
+@socketio.on('attribute.add', namespace='/')
+def add_attribute(data):
+
+    log.info('Adding attribute', extra=data)
+
+    entity_id = data.get('entityId')
+    attribute_id = data.get('attributeId')
+    fields = data.get('fields')
+
+    try:
+        controller.add_attribute(entity_id, attribute_id, fields)
+        emit('entity.sync', controller.sync_entity(entity_id))
+
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})

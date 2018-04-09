@@ -2,35 +2,109 @@ define(['./module'], function (controllers) {
     'use strict';
 
     controllers.controller('AppCtrl', ['$rootScope', '$http', '$scope', '$window', 'moment', 'IOSvc', 'AttributeSvc',
-		'EntitySvc', 'NotificationSvc', 'FileUploader',
+        'EntitySvc', 'NotificationSvc', 'FileUploader',
         function ($rootScope, $http, $scope, $window, moment, io, attrSvc, entitySvc, n, FileUploader) {
 
             console.log('AppCtrl');
 
             $scope.attributes = {};
             $scope.entities = {};
+            $scope.source = 'testSource';
+
 
             $scope.view = 'default';
             $scope.uploader = new FileUploader();
 
-            $scope.uploader.onAfterAddingFile = function(file) {
-               console.log('File added');
-               console.log(file);
+            $scope.attrForm = {
+                entityId: null,
+                attributeId: null,
+                fields: {}
             };
 
-            $scope.uploader.onErrorItem = function(item, response, status, headers) {
-               item.remove();
-               n.warning('Upload failed', 'Ensure that the file is a valid XML file.')
+            $scope.form = {
+                hover: {},
+                attribute: {
+                    edit: {},
+                    new: {},
+                    expanded: {}
+                },
+                entity: {
+                    expanded: {},
+                    edit: {},
+                    new: {}
+                }
             };
 
-            $scope.uploader.onSuccessItem = function(item, response, status, headers) {
+            $scope.hover = {};
+
+            $scope.beforeAddAttribute = function (entityId) {
+                $scope.form.attribute.new[entityId] = {
+                    attributeId: null,
+                    fields: {}
+                };
+            };
+
+            $scope.addAttribute = function (entityId) {
+                console.log('Add attribute: ' + entityId + ', ' + $scope.form.attribute.new[entityId].attributeId);
+                console.log($scope.form.attribute.new[entityId].fields);
+                io.emit('attribute.add', {
+                    entityId: entityId,
+                    attributeId: $scope.form.attribute.new[entityId].attributeId,
+                    fields: $scope.form.attribute.new[entityId].fields
+                });
+            };
+
+            $scope.removeAttribute = function (entityId, attributeId) {
+                console.log('Remove attribute: ' + entityId + ', ' + attributeId);
+                io.emit('attribute.remove', {
+                    entityId: entityId,
+                    attributeId: attributeId
+                })
+            };
+
+            $scope.initAttributeField = function (fieldId) {
+                if ($scope.form.attribute.edit[fieldId] == null) {
+                    $scope.form.attribute.edit[fieldId] = {
+                        expanded: false,
+                        value: null
+                    };
+                }
+            };
+
+            $scope.beforeUpdateAttribute = function (fieldId) {
+                $scope.initAttributeField(fieldId);
+                $scope.form.attribute.edit[fieldId].expanded = !$scope.form.attribute.edit[fieldId].expanded;
+            };
+
+            $scope.updateAttribute = function (entityId, attributeId, fieldId) {
+                n.info('Updating Attribute', 'Updating ' + $scope.entities[entityId].name + ' field to ' + $scope.form.attribute.edit[fieldId].value);
+                io.emit('attribute.update', {
+                    entityId: entityId,
+                    fieldId: fieldId,
+                    value: $scope.form.attribute.edit[fieldId].value
+                });
+                $scope.form.attribute.edit[fieldId].expanded = false;
+                console.log('Update attribute: ' + entityId + ', ' + attributeId + ', ' + fieldId)
+            };
+
+            $scope.uploader.onAfterAddingFile = function (file) {
+                console.log('File added');
+                console.log(file);
+            };
+
+            $scope.uploader.onErrorItem = function (item, response, status, headers) {
+                item.remove();
+                n.warning('Upload failed', 'Ensure that the file is a valid XML file.')
+            };
+
+            $scope.uploader.onSuccessItem = function (item, response, status, headers) {
                 item.remove();
                 n.info('Upload successful', 'The XML file has been uploaded successfully.');
                 io.emit('xml.upload', null)
             };
 
 
-            $scope.setView = function(view) {
+            $scope.setView = function (view) {
                 console.log('View set to ' + view);
                 $scope.view = view;
             };
@@ -59,12 +133,16 @@ define(['./module'], function (controllers) {
                 }
             };
 
-            io.on('attribute.sync', function(attributes) {
-               $scope.attributes = attrSvc.sync(attributes);
+            io.on('attribute.sync', function (attributes) {
+                $scope.attributes = attrSvc.sync(attributes);
             });
 
-            io.on('entity.sync', function(entities) {
-               $scope.entities = entitySvc.sync(entities);
+            io.on('entity.sync.all', function (entities) {
+                $scope.entities = entitySvc.syncAll(entities);
+            });
+
+            io.on('entity.sync', function (entity) {
+                $scope.entities[entity.id] = entitySvc.sync(entity);
             });
 
             io.on('success', function (message) {
@@ -90,6 +168,6 @@ define(['./module'], function (controllers) {
             //////////////////////////////////////////////////
 
             io.emit('attribute.sync', null);
-            io.emit('entity.sync', null);
+            io.emit('entity.sync.all', null);
         }])
 });
