@@ -9,6 +9,7 @@ define(['./module'], function (controllers) {
 
             $scope.attributes = {};
             $scope.entities = {};
+            $scope.entityTypes = {};
             $scope.source = 'testSource';
 
 
@@ -32,10 +33,60 @@ define(['./module'], function (controllers) {
                     expanded: {},
                     edit: {},
                     new: {}
-                }
+                },
+                expanded: {},
+                property: {}
             };
 
             $scope.hover = {};
+
+            $scope.initializeEntityProps = function (entityId) {
+                $scope.form.property[entityId] = {
+                    id: {
+                        hover: false,
+                        expanded: false,
+                        edit: null
+                    },
+                    name: {
+                        hover: false,
+                        expanded: false,
+                        edit: null
+                    },
+                    type: {
+                        hover: false,
+                        expanded: false,
+                        edit: null
+                    },
+                    canonical: {
+                        hover: false,
+                        expanded: false,
+                        edit: null
+                    }
+                }
+            };
+
+            $scope.updateEntity = function (entityId, property) {
+                var entity = {
+                    id: $scope.entities[entityId].id,
+                    name: $scope.entities[entityId].name,
+                    type: $scope.entities[entityId].type,
+                    canonical: $scope.entities[entityId].canonical
+                };
+                entity[property] = $scope.form.property[entityId][property].edit;
+                io.emit('entity.update', entity);
+                $scope.form.property[entityId][property].expanded = false;
+            };
+
+            $scope.beforeEditProperty = function(entityId, property) {
+                $scope.form.property[entityId][property].expanded = true;
+                $scope.form.property[entityId][property].edit = $scope.entities[entityId][property];
+            };
+
+            $scope.initializeContainerItem = function (entityId) {
+                if ($scope.form.expanded[entityId] == null) {
+                    $scope.form.expanded[entityId] = false;
+                }
+            };
 
             $scope.beforeAddAttribute = function (entityId) {
                 $scope.form.attribute.new[entityId] = {
@@ -145,6 +196,10 @@ define(['./module'], function (controllers) {
                 $scope.entities[entity.id] = entitySvc.sync(entity);
             });
 
+            io.on('entity.type.sync', function (types) {
+                $scope.entityTypes = types;
+            });
+
             io.on('success', function (message) {
                 console.log('success: ' + message.message);
                 n.info(message.title, message.message);
@@ -169,5 +224,6 @@ define(['./module'], function (controllers) {
 
             io.emit('attribute.sync', null);
             io.emit('entity.sync.all', null);
+            io.emit('entity.type.sync', null);
         }])
 });

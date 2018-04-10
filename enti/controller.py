@@ -35,6 +35,22 @@ class Controller:
 
             return attr_json
 
+    def sync_entity_types(self):
+
+        with session_scope() as session:
+
+            type_json = {t.id:t.json() for t in Query.EntityType.all(session)}
+
+            return type_json
+
+    def sync_arity_types(self):
+
+        with session_scope() as session:
+
+            arity_json = {a.id:a.json() for a in Query.ArityType.all(session)}
+
+            return arity_json
+
 
     def update_attribute(self, field_id, value):
 
@@ -52,6 +68,32 @@ class Controller:
                 log.info('Updating field {} value from {} to {}'.format(field_id, old_val, value))
 
                 field.value = value
+
+    def update_entity(self, entity_id, data):
+
+        with session_scope() as session:
+            entity = Query.Entity.get(session, entity_id)
+            if entity is None:
+                raise Exception('Could not locate entity identified by ID: {}'.format(entity_id))
+
+            name = data.get('name')
+            if name is None or len(name) == 0:
+                raise Exception('Entity name cannot be left empty. Please enter a value.')
+            entity.name = name
+
+            _type = data.get('type')
+            entity_type = Query.EntityType.get(session, _type)
+            if entity_type is None:
+                raise Exception('Entity type {} is not recognized as a valid type.'.format(_type))
+            entity.type = _type
+
+            canonical = data.get('canonical')
+            if canonical not in ('true', 'false', True, False):
+                raise Exception('Canonical value must be a boolean value (true, false).')
+            if isinstance(canonical, str):
+                canonical = canonical.lower() == 'true'
+            entity.canonical = canonical
+
 
     def remove_attribute(self, attribute_id):
 

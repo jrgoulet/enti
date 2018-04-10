@@ -61,6 +61,15 @@ body * {
     line-height: 40px;
 }
 
+.entity-container-header-collapsed {
+    margin: 5px 0;
+}
+
+.entity-property-value {
+    line-height: 40px;
+    font-size: 15px;
+}
+
 .entity-container-header {
     border-bottom: 1px solid darkgrey;
     margin: 10px 0;

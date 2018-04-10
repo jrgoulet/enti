@@ -78,18 +78,18 @@ def upload():
 
 @socketio.on('attribute.sync', namespace='/')
 def sync_attributes(null):
-
     emit('attribute.sync', controller.sync_attributes())
 
 @socketio.on('entity.sync.all', namespace='/')
 def sync_attributes(null):
-
     emit('entity.sync.all', controller.sync_entities())
 
+@socketio.on('entity.type.sync', namespace='/')
+def sync_entity_types(null):
+    emit('entity.type.sync', controller.sync_entity_types())
 
 @socketio.on('xml.upload', namespace='/')
 def upload_xml(null):
-
     controller.upload_xml()
 
 @socketio.on('attribute.update', namespace='/')
@@ -138,6 +138,20 @@ def add_attribute(data):
 
     try:
         controller.add_attribute(entity_id, attribute_id, fields)
+        emit('entity.sync', controller.sync_entity(entity_id))
+
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})
+
+@socketio.on('entity.update', namespace='/')
+def update_entity(data):
+
+    log.info('Updating entity', extra=data)
+
+    entity_id = data.get('id')
+
+    try:
+        controller.update_entity(entity_id, data)
         emit('entity.sync', controller.sync_entity(entity_id))
 
     except Exception as e:
