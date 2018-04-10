@@ -5,7 +5,7 @@ from enti.settings import FileConfig
 from enti.utils.parser import run_entity_extraction
 import os
 from enti.extensions import log
-from enti.models import EntityAttribute, EntityAttributeField
+from enti.models import EntityAttribute, EntityAttributeField, Entity
 from pprint import pprint
 
 
@@ -68,6 +68,51 @@ class Controller:
                 log.info('Updating field {} value from {} to {}'.format(field_id, old_val, value))
 
                 field.value = value
+
+    def add_entity(self, data):
+
+        with session_scope() as session:
+
+            entity_id = data.get('id')
+
+            if entity_id is None or len(entity_id) == 0:
+                raise Exception('Entity ID cannot be empty.')
+
+            if Query.Entity.get(session, entity_id) != None:
+                raise Exception('Entity ID is already in use.')
+
+            name = data.get('name')
+
+            if name is None or len(name) == 0:
+                raise Exception('Entity Name cannot be empty.')
+
+            _type = data.get('type')
+            entity_type = Query.EntityType.get(session, _type)
+            if entity_type is None:
+                raise Exception('Entity type {} is not recognized as a valid type.'.format(_type))
+
+            canonical = data.get('canonical')
+            if canonical not in ('true', 'false', True, False):
+                raise Exception('Canonical value must be a boolean value (true, false).')
+            if isinstance(canonical, str):
+                canonical = canonical.lower() == 'true'
+
+            entity = Entity(name=name, type=_type, canonical=canonical, id=entity_id)
+            session.add(entity)
+
+            return entity_id
+
+    def remove_entity(self, entity_id):
+
+        with session_scope() as session:
+            entity = Query.Entity.get(session, entity_id)
+            attributes = Query.EntityAttribute.filter(session, entity_id)
+            for attribute in attributes:
+                session.delete(attribute)
+            session.delete(entity)
+
+
+
 
     def update_entity(self, entity_id, data):
 

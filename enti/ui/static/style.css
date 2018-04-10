@@ -53,6 +53,14 @@ body * {
     padding: 10px 0;
 }
 
+.pad-20 {
+    padding: 20px;
+}
+
+.lh-20 {
+    line-height: 20px !important;
+}
+
 .mb-7 {
     margin-bottom: 7px;
 }

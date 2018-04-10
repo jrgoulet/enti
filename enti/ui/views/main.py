@@ -88,6 +88,30 @@ def sync_attributes(null):
 def sync_entity_types(null):
     emit('entity.type.sync', controller.sync_entity_types())
 
+@socketio.on('entity.add', namespace='/')
+def add_entity(data):
+    log.info('Adding entity', extra=data)
+
+    try:
+        entity_id = controller.add_entity(data)
+        emit('entity.sync', controller.sync_entity(entity_id))
+        emit('entity.add.success', None)
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})
+        emit('entity.add.failure', None)
+
+@socketio.on('entity.remove', namespace='/')
+def remove_entity(data):
+    log.info('Removing entity', extra=data)
+
+    entity_id = data.get('id')
+
+    try:
+        controller.remove_entity(entity_id)
+        emit('info', {'title': 'Remove Entity', 'message': 'Entity removed successfully'})
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})
+
 @socketio.on('xml.upload', namespace='/')
 def upload_xml(null):
     controller.upload_xml()

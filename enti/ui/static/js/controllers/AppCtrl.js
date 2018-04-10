@@ -35,10 +35,46 @@ define(['./module'], function (controllers) {
                     new: {}
                 },
                 expanded: {},
-                property: {}
+                property: {},
+                add: {
+                    entity: {
+                        id: null,
+                        name: null,
+                        type: null,
+                        canonical: true,
+                        expanded: false
+                    }
+                },
+                remove: {
+                    entity: {
+                        expanded: {}
+                    }
+                }
             };
 
             $scope.hover = {};
+
+            $scope.addEntity = function() {
+                io.emit('entity.add', {
+                    id: $scope.form.add.entity.id,
+                    name: $scope.form.add.entity.name,
+                    type: $scope.form.add.entity.type,
+                    canonical: $scope.form.add.entity.canonical
+                });
+                $scope.form.add.entity.expanded=false;
+            };
+
+            $scope.reattemptAddEntity = function() {
+                $scope.form.add.entity.expanded=true;
+                n.warning('Add Entity', 'Please check new entity data and try again.');
+            };
+
+            $scope.confirmAddEntity = function() {
+              $scope.form.add.entity.id = null;
+              $scope.form.add.entity.name = null;
+              $scope.form.add.entity.type = null;
+              $scope.form.add.entity.canonical = true;
+            };
 
             $scope.initializeEntityProps = function (entityId) {
                 $scope.form.property[entityId] = {
@@ -77,7 +113,7 @@ define(['./module'], function (controllers) {
                 $scope.form.property[entityId][property].expanded = false;
             };
 
-            $scope.beforeEditProperty = function(entityId, property) {
+            $scope.beforeEditProperty = function (entityId, property) {
                 $scope.form.property[entityId][property].expanded = true;
                 $scope.form.property[entityId][property].edit = $scope.entities[entityId][property];
             };
@@ -184,6 +220,14 @@ define(['./module'], function (controllers) {
                 }
             };
 
+            $scope.removeEntity = function(entityId) {
+                io.emit('entity.remove', {
+                   id: entityId
+                });
+                delete $scope.entities[entityId];
+                delete entitySvc.entities[entityId];
+            };
+
             io.on('attribute.sync', function (attributes) {
                 $scope.attributes = attrSvc.sync(attributes);
             });
@@ -198,6 +242,15 @@ define(['./module'], function (controllers) {
 
             io.on('entity.type.sync', function (types) {
                 $scope.entityTypes = types;
+            });
+
+            io.on('entity.add.success', function() {
+               $scope.confirmAddEntity();
+               n.info('Add Entity', 'Entity added successfully.');
+            });
+
+            io.on('entity.add.failure', function() {
+               $scope.reattemptAddEntity();
             });
 
             io.on('success', function (message) {

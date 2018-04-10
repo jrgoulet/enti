@@ -14,6 +14,8 @@ class Entity(Base):
     type = Column(String(128), ForeignKey('EntityType.id'), nullable=False)
     canonical = Column(Boolean, nullable=False)
 
+    attribute = relationship("EntityAttribute",cascade="all, delete-orphan")
+
     def __init__(self, name, type, canonical, id=None):
         self.uuid = id if id is not None else generate_uuid()
         self.id = id
