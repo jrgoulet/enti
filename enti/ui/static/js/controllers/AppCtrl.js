@@ -12,6 +12,9 @@ define(['./module'], function (controllers) {
             $scope.entityTypes = {};
             $scope.source = 'testSource';
 
+            $scope.attrSvc = attrSvc;
+            $scope.entitySvc = entitySvc;
+
 
             $scope.view = 'default';
             $scope.uploader = new FileUploader();
@@ -201,21 +204,6 @@ define(['./module'], function (controllers) {
                 $scope.view = view;
             };
 
-            $scope.route = {
-                add: function (source_id, cage_id) {
-                    routeSvc.add(source_id, cage_id)
-                },
-                remove: function (source_id, cage_id) {
-                    routeSvc.remove(source_id, cage_id);
-                }
-            };
-
-            $scope.action = {
-                locate: function (id) {
-                    actionSvc.locate(id)
-                }
-            };
-
             $scope.util = {
                 isEmpty: function (dict) {
                     if (dict !== null && typeof dict === 'object') {
@@ -259,29 +247,7 @@ define(['./module'], function (controllers) {
             });
 
             io.on('entity.export.all.success', function () {
-                // $http({
-                //     method: "get",
-                //     url: "export"
-                // }).success(function () {
-                //     n.info('Export', 'Export successful');
-                // }).error(function () {
-                //     n.danger('Export', 'Export failed');
-                // })
-                //Initialize file format you want csv or xls
-                var uri = 'data:text/xml;charset=utf-8,';
-
-                //this trick will generate a temp <a /> tag
-                var link = document.createElement("a");
-                link.href = 'export';
-
-                //set the visibility hidden so it will not effect on your web-layout
-                link.style = "visibility:hidden";
-                link.download = "entities.xml"; //this is an example file to download, use yours
-
-                //this part will append the anchor tag and remove it after automatic click
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                entitySvc.download();
             });
 
             io.on('success', function (message) {

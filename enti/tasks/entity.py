@@ -13,11 +13,8 @@ from enti.query import Query
 def clean_empty_entity_attrs():
 
     with session_scope() as session:
-
         entity_attrs = Query.EntityAttribute.all(session)
-
         for entity_attr in entity_attrs:
-
             fields = Query.EntityAttributeField.filter(session, entity_attribute_id=entity_attr.id)
 
             if len(fields) == 0:
@@ -57,8 +54,6 @@ def import_entities(entities_json):
                 attribute = Query.Attribute.get(session, attr_id)
 
                 if attribute is None:
-                    # log.error('Entity attribute {} for entity {} is undefined, skipping.'.format(attr_id, entity_id))
-
                     if a.get('sid') is not None:
                         attr_type = 'entity'
                     else:
@@ -102,7 +97,6 @@ def import_entities(entities_json):
                         duplicate = True
 
                 if not duplicate:
-
                     entity_attr = EntityAttribute(entity_id, attr_id)
                     session.add(entity_attr)
 
@@ -113,7 +107,6 @@ def import_entities(entities_json):
                             log.error(
                                 'Undefined field {} for attribute {} for entity {}, skipping.'.format(field_id, attr_id,
                                                                                                       entity_id))
-
                         else:
                             linked_field = Query.LinkedAttributeField.filter(session, attr_id, field_id)
 
