@@ -2,7 +2,7 @@ from enti.tasks import initialize_defaults, initialize_attributes, import_entiti
 from enti.query import Query
 from enti.database import session_scope
 from enti.settings import FileConfig
-from enti.utils.parser import run_entity_extraction
+from enti.utils.parser import run_entity_extraction, export_entity_xml
 import os
 from enti.extensions import log
 from enti.models import EntityAttribute, EntityAttributeField, Entity
@@ -68,6 +68,12 @@ class Controller:
                 log.info('Updating field {} value from {} to {}'.format(field_id, old_val, value))
 
                 field.value = value
+
+    def export_entities(self):
+
+        entity_json = self.sync_entities()
+        export_entity_xml(entity_json)
+
 
     def add_entity(self, data):
 
@@ -197,7 +203,7 @@ class Controller:
             for field in fields:
                 lf = Query.LinkedAttributeField.get(session, field['linked_field_id']).json()
                 af = Query.AttributeField.get(session, lf['field_id']).json()
-
+                field['xml_id'] = af['id']
                 field['name'] = af['name']
                 e_attr['fields'].append(field)
 

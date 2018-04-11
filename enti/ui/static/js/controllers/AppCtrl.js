@@ -22,6 +22,11 @@ define(['./module'], function (controllers) {
                 fields: {}
             };
 
+            $scope.exportEntities = function () {
+                n.info('Export', 'Preparing entities for export');
+                io.emit('entity.export.all', null);
+            };
+
             $scope.form = {
                 hover: {},
                 attribute: {
@@ -54,26 +59,26 @@ define(['./module'], function (controllers) {
 
             $scope.hover = {};
 
-            $scope.addEntity = function() {
+            $scope.addEntity = function () {
                 io.emit('entity.add', {
                     id: $scope.form.add.entity.id,
                     name: $scope.form.add.entity.name,
                     type: $scope.form.add.entity.type,
                     canonical: $scope.form.add.entity.canonical
                 });
-                $scope.form.add.entity.expanded=false;
+                $scope.form.add.entity.expanded = false;
             };
 
-            $scope.reattemptAddEntity = function() {
-                $scope.form.add.entity.expanded=true;
+            $scope.reattemptAddEntity = function () {
+                $scope.form.add.entity.expanded = true;
                 n.warning('Add Entity', 'Please check new entity data and try again.');
             };
 
-            $scope.confirmAddEntity = function() {
-              $scope.form.add.entity.id = null;
-              $scope.form.add.entity.name = null;
-              $scope.form.add.entity.type = null;
-              $scope.form.add.entity.canonical = true;
+            $scope.confirmAddEntity = function () {
+                $scope.form.add.entity.id = null;
+                $scope.form.add.entity.name = null;
+                $scope.form.add.entity.type = null;
+                $scope.form.add.entity.canonical = true;
             };
 
             $scope.initializeEntityProps = function (entityId) {
@@ -220,9 +225,9 @@ define(['./module'], function (controllers) {
                 }
             };
 
-            $scope.removeEntity = function(entityId) {
+            $scope.removeEntity = function (entityId) {
                 io.emit('entity.remove', {
-                   id: entityId
+                    id: entityId
                 });
                 delete $scope.entities[entityId];
                 delete entitySvc.entities[entityId];
@@ -244,13 +249,39 @@ define(['./module'], function (controllers) {
                 $scope.entityTypes = types;
             });
 
-            io.on('entity.add.success', function() {
-               $scope.confirmAddEntity();
-               n.info('Add Entity', 'Entity added successfully.');
+            io.on('entity.add.success', function () {
+                $scope.confirmAddEntity();
+                n.info('Add Entity', 'Entity added successfully.');
             });
 
-            io.on('entity.add.failure', function() {
-               $scope.reattemptAddEntity();
+            io.on('entity.add.failure', function () {
+                $scope.reattemptAddEntity();
+            });
+
+            io.on('entity.export.all.success', function () {
+                // $http({
+                //     method: "get",
+                //     url: "export"
+                // }).success(function () {
+                //     n.info('Export', 'Export successful');
+                // }).error(function () {
+                //     n.danger('Export', 'Export failed');
+                // })
+                //Initialize file format you want csv or xls
+                var uri = 'data:text/xml;charset=utf-8,';
+
+                //this trick will generate a temp <a /> tag
+                var link = document.createElement("a");
+                link.href = 'export';
+
+                //set the visibility hidden so it will not effect on your web-layout
+                link.style = "visibility:hidden";
+                link.download = "entities.xml"; //this is an example file to download, use yours
+
+                //this part will append the anchor tag and remove it after automatic click
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
 
             io.on('success', function (message) {

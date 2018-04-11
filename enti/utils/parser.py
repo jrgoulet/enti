@@ -2,6 +2,7 @@ from io import StringIO
 import xml.etree.ElementTree as ET
 from pprint import pprint
 import yaml
+from enti.settings import FileConfig
 
 ENTITIES_TAG = 'entities'
 ENTITY_TAG = 'entity'
@@ -121,6 +122,43 @@ def build_entity_xml():
     tree = ET.ElementTree(root)
     tree.write('../../res/out.xml', encoding='utf-8', xml_declaration=True)
 
+
+def export_entity_xml(entities):
+
+    root_attrs = {
+        'xmlns': 'digitalreasoning.com/entity/definitions',
+        'source': 'test'
+    }
+    root = ET.Element('entities', **root_attrs)
+
+    for entity_id, entity in entities.items():
+
+        entity_attrs = {
+            'id': entity.get('id'),
+            'name': entity.get('name'),
+            'type': entity.get('type'),
+            'canonical': str(entity.get('canonical')).lower()
+        }
+
+        node = ET.SubElement(root, 'entity', entity_attrs)
+
+        for attribute_id, attribute in entity.get('attributes', {}).items():
+
+            attr_node = ET.SubElement(node, attribute_id)
+
+            for value in attribute.get('data', []):
+
+                fields = {}
+
+                for field in value.get('fields', []):
+
+                    xml_id = field.get('xml_id', None)
+                    fields[xml_id] = field['value']
+
+                ET.SubElement(attr_node, 'value', fields)
+
+    tree = ET.ElementTree(root)
+    tree.write(FileConfig.EXPORT_FILE, encoding='utf-8', xml_declaration=True)
 
 if __name__ == '__main__':
     # run()

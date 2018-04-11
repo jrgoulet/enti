@@ -7,7 +7,7 @@ from flask_socketio import emit
 
 from enti.controller import Controller
 from enti.extensions import log, socketio
-from flask import jsonify, Response, request
+from flask import jsonify, Response, request, send_file
 from werkzeug.utils import secure_filename
 import json
 from enti.settings import FileConfig
@@ -74,7 +74,9 @@ def upload():
     log.info('File saved successfully')
     return Response(json.dumps({'status': 'Success'}), status=200, mimetype='application/json')
 
-
+@blueprint.route('/export', methods=['GET'])
+def download(data=None):
+    return send_file(FileConfig.EXPORT_FILE, attachment_filename='entities.xml', as_attachment=True)
 
 @socketio.on('attribute.sync', namespace='/')
 def sync_attributes(null):
@@ -177,6 +179,18 @@ def update_entity(data):
     try:
         controller.update_entity(entity_id, data)
         emit('entity.sync', controller.sync_entity(entity_id))
+
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})
+
+@socketio.on('entity.export.all', namespace='/')
+def export_entities(null):
+
+    log.info('Exporting entities')
+
+    try:
+        controller.export_entities()
+        emit('entity.export.all.success', None)
 
     except Exception as e:
         emit('danger', {'title': 'Error', 'message': str(e)})
