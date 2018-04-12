@@ -32,14 +32,16 @@ define(['./module'], function (controllers) {
                 io.emit('entity.export.all', null);
             };
 
-            $scope.selectEntity = function(entityId) {
-              console.log('Setting selected entity to: ' + entityId);
-              $scope.selectedEntity = entityId;
-              console.log('Selected Entity: ' + $scope.selectedEntity);
+            $scope.selectEntity = function (entityId) {
+                console.log('Setting selected entity to: ' + entityId);
+                $scope.view = 'entity';
+                $scope.selectedEntity = entityId;
+                $scope.initializeEntityProps(entityId);
+                console.log('Selected Entity: ' + $scope.selectedEntity);
             };
 
-            $scope.beforeAddEntity = function() {
-                $scope.selectedEntity = null;
+            $scope.beforeAddEntity = function () {
+                $scope.view = 'add';
                 $scope.form.add.entity.expanded = true;
             };
 
@@ -65,6 +67,9 @@ define(['./module'], function (controllers) {
                         canonical: true,
                         expanded: false
                     }
+                },
+                import: {
+                    expanded: false
                 },
                 remove: {
                     entity: {
@@ -229,6 +234,11 @@ define(['./module'], function (controllers) {
                     }
                     return true
                 }
+            };
+
+            $scope.beforeImport = function() {
+                $scope.view = 'import';
+                $scope.selectedEntity = null;
             };
 
             $scope.removeEntity = function (entityId) {

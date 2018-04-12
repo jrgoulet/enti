@@ -1,0 +1,403 @@
+<div class="row" style="margin-top:80px;">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+            <h2>External Entity Manager</h2>
+        </div>
+        <div class="row">
+            <p>
+                This tool is used for the management of external entities. Use the navigation pane on the left to get
+                started. To add a new External Entity, navigate to the Canvas tab. To import a list of existing
+                external entities, click on the Import tab. To export all of the entities into an XML file for
+                ingestion into Synthesis, click on the export tab. To view all of the External Entities that have
+                been created by this manager, click on the Directory tab.
+            </p>
+
+        </div>
+
+        <div class="row pad-20" align="right">
+            <button ng-click="form.add.entity.expanded=true"
+                    class="button button-3d button-small button-green">Add Entity
+            </button>
+            <button ng-click="exportEntities()"
+                    class="button button-3d button-small button-blue">Export Entities
+            </button>
+        </div>
+
+        <div class="entity-container" ng-show="form.add.entity.expanded==true">
+            <div class="row entity-container-header">
+                <div class="col-md-4">
+                    <span class="entity-name">{a form.add.entity.name a}</span>
+                </div>
+                <div class="col-md-4">
+                    <span class="entity-type">{a form.add.entity.type a}</span>
+                </div>
+                <div class="col-md-4" align="right">
+                    <span class="entity-id">{a form.add.entity.id a}</span>
+                </div>
+            </div>
+            <div class="row entity-container-panel">
+                <div class="col-md-2">
+                    <h1 class="entity-container-h1">New Entity</h1>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3" align="right">
+                            <span class="attribute-name">Entity ID</span>
+                        </div>
+                        <div class="col-md-3 lh-40" align="left">
+                            <input class="lh-20" type="text" ng-model="form.add.entity.id">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" align="right">
+                            <span class="attribute-name">Entity Name</span>
+                        </div>
+                        <div class="col-md-3 lh-40" align="left">
+                            <input class="lh-20" type="text" ng-model="form.add.entity.name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" align="right">
+                            <span class="attribute-name">Entity Type</span>
+                        </div>
+                        <div class="col-md-3 lh-40" align="left">
+                            <select ng-model="form.add.entity.type">
+                                <option ng-repeat="entityType in entityTypes" value="{a entityType.id a}">{a
+                                    entityType.name a}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" align="right">
+                            <span class="attribute-name">Canonical</span>
+                        </div>
+                        <div class="col-md-3 lh-40" align="left">
+                            <select ng-model="form.add.entity.canonical">
+                                <option value="true">true</option>
+                                <option value="false">false</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <button ng-click="addEntity()"
+                            class="button button-blue button-3d button-small">
+                        <i class="fa fa-save"></i>Save
+                    </button>
+                    <button ng-click="form.add.entity.expanded=false"
+                            class="button button-red button-3d button-small">
+                        <i class="fa fa-remove"></i>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="entity-container" ng-repeat="entity in entities" ng-init="initializeContainerItem(entity.id)">
+
+            <div class="row entity-container-header-collapsed"
+                 ng-show="form.expanded[entity.id] == null || form.expanded[entity.id] == false"
+                 ng-click="form.expanded[entity.id] = true">
+                <div class="col-md-4">
+                    <span class="entity-name">{a entity.name a}</span>
+                </div>
+                <div class="col-md-4">
+                    <span class="entity-type">{a entityTypes[entity.type].name a}</span>
+                </div>
+                <div class="col-md-4" align="right">
+                    <span class="entity-id">{a entity.id a}</span>
+                </div>
+            </div>
+
+
+            <div ng-show="form.expanded[entity.id] == true">
+                <div class="row entity-container-header" ng-click="form.expanded[entity.id] = false">
+                    <div class="col-md-4">
+                        <span class="entity-name">{a entity.name a}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="entity-type">{a entity.type a}</span>
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <span class="entity-id">{a entity.id a}</span>
+                    </div>
+                </div>
+                <div class="row entity-container-body">
+                    <div class="col-md-2">
+                        <h1 class="entity-container-h1">Attributes</h1>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="entity-attribute-container" ng-repeat="attribute in entity.attributes | toArray">
+                            <div class="row">
+                                <div class="col-md-3" align="right">
+                                    <span class="attribute-name">{a attribute.name a}</span>
+                                </div>
+                                <div class="col-md-9">
+                                    <div ng-repeat="entry in attribute.data"
+                                         ng-mouseover="hover[entry.id] = true"
+                                         ng-mouseleave="hover[entry.id] = false">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <div ng-repeat="field in entry.fields">
+                                                    <div ng-init="initAttributeField(field.id)"
+                                                         class="row attribute-field-container"
+                                                         ng-mouseover="hover[field.id] = true"
+                                                         ng-mouseleave="hover[field.id] = false">
+                                                        <div class="col-xs-2 lh-35">
+                                                            <span class="attribute-field-name">{a field.name a}</span>
+                                                        </div>
+                                                        <div class="col-xs-6 lh-35">
+                                                            <span ng-show="form.attribute.edit[field.id].expanded == false"
+                                                                  class="attribute-field-value">{a field.value a}</span>
+                                                            <input class="lh-20" ng-show="form.attribute.edit[field.id].expanded == true"
+                                                                   type="text"
+                                                                   ng-model="form.attribute.edit[field.id].value"
+                                                                   ng-init="form.attribute.edit[field.id].value = field.value">
+                                                        </div>
+                                                        <div class="col-xs-4" align="right">
+                                                            <div ng-show="hover[field.id] == true && (form.attribute.edit[field.id] == null || form.attribute.edit[field.id].expanded == false)">
+                                                                <button ng-click="beforeUpdateAttribute(field.id)">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div ng-show="form.attribute.edit[field.id].expanded == true">
+                                                                <button ng-click="updateAttribute(entity.id, attribute.id, field.id)">
+                                                                    <i class="fa fa-save"></i>
+                                                                </button>
+                                                                <button ng-click="form.attribute.edit[field.id].expanded = false">
+                                                                    <i class="fa fa-remove"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <div ng-show="hover[entry.id] == true">
+                                                    <button ng-click="removeAttribute(entity.id, entry.id)"
+                                                            class="attribute-remove-button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row entity-container-panel" ng-init="initializeEntityProps(entity.id)">
+                    <div class="col-md-2">
+                        <h1 class="entity-container-h1">Properties</h1>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row" ng-mouseover="form.property[entity.id].id.hover = true"
+                             ng-mouseleave="form.property[entity.id].id.hover = false">
+                            <div class="col-md-3" align="right">
+                                <span class="attribute-name">Entity ID</span>
+                            </div>
+                            <div class="col-md-3 lh-40" align="left">
+                                <span ng-show="form.property[entity.id].id.expanded == false"
+                                      class="entity-property-value">{a entity.id a}</span>
+                                <input class="lh-20" type="text"
+                                       ng-model="form.property[entity.id].id.edit"
+                                       ng-show="form.property[entity.id].id.expanded == true">
+
+                            </div>
+                            <div class="col-md-3">
+                                {#                                <button ng-show="form.property[entity.id].id.hover == true && form.property[entity.id].id.expanded == false"#}
+                                {#                                        ng-click="beforeEditProperty(entity.id, 'id')">#}
+                                {#                                    <i class="fa fa-edit"></i>#}
+                                {#                                </button>#}
+                                {#                                <div ng-show="form.property[entity.id].id.expanded == true">#}
+                                {#                                    <button ng-click="">#}
+                                {#                                        <i class="fa fa-save"></i>#}
+                                {#                                    </button>#}
+                                {#                                    <button ng-click="form.property[entity.id].id.expanded = false">#}
+                                {#                                        <i class="fa fa-remove"></i>#}
+                                {#                                    </button>#}
+                                {#                                </div>#}
+                            </div>
+                        </div>
+                        <div class="row" ng-mouseover="form.property[entity.id].name.hover = true"
+                             ng-mouseleave="form.property[entity.id].name.hover = false">
+                            <div class="col-md-3" align="right">
+                                <span class="attribute-name">Entity Name</span>
+                            </div>
+                            <div class="col-md-3 lh-40" align="left">
+                                <span ng-show="form.property[entity.id].name.expanded == false"
+                                      class="entity-property-value">{a entity.name a}</span>
+                                <input class="lh-20" type="text"
+                                       ng-model="form.property[entity.id].name.edit"
+                                       ng-show="form.property[entity.id].name.expanded == true">
+                            </div>
+                            <div class="col-md-3">
+                                <button ng-show="form.property[entity.id].name.hover == true && form.property[entity.id].name.expanded == false"
+                                        ng-click="beforeEditProperty(entity.id, 'name')">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <div ng-show="form.property[entity.id].name.expanded == true">
+                                    <button ng-click="updateEntity(entity.id, 'name')">
+                                        <i class="fa fa-save"></i>
+                                    </button>
+                                    <button ng-click="form.property[entity.id].name.expanded = false">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-mouseover="form.property[entity.id].type.hover = true"
+                             ng-mouseleave="form.property[entity.id].type.hover = false">
+                            <div class="col-md-3" align="right">
+                                <span class="attribute-name">Entity Type</span>
+                            </div>
+                            <div class="col-md-3 lh-40" align="left">
+                                <span ng-show="form.property[entity.id].type.expanded == false"
+                                      class="entity-property-value">{a entity.type a}</span>
+                                <select ng-model="form.property[entity.id].type.edit"
+                                        ng-show="form.property[entity.id].type.expanded == true">
+                                    <option ng-repeat="entityType in entityTypes | toArray" value="{a entityType.id a}">
+                                        {a entityType.name a}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button ng-show="form.property[entity.id].type.hover == true && form.property[entity.id].type.expanded == false"
+                                        ng-click="beforeEditProperty(entity.id, 'type')">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <div ng-show="form.property[entity.id].type.expanded == true">
+                                    <button ng-click="updateEntity(entity.id, 'type')">
+                                        <i class="fa fa-save"></i>
+                                    </button>
+                                    <button ng-click="form.property[entity.id].type.expanded = false">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-mouseover="form.property[entity.id].canonical.hover = true"
+                             ng-mouseleave="form.property[entity.id].canonical.hover = false">
+                            <div class="col-md-3" align="right">
+                                <span class="attribute-name">Canonical</span>
+                            </div>
+                            <div class="col-md-3 lh-40" align="left">
+                                <span ng-show="form.property[entity.id].canonical.expanded == false"
+                                      class="entity-property-value">{a entity.canonical a}</span>
+                                <select ng-model="form.property[entity.id].canonical.edit"
+                                        ng-show="form.property[entity.id].canonical.expanded == true">
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button ng-show="form.property[entity.id].canonical.hover == true && form.property[entity.id].canonical.expanded == false"
+                                        ng-click="beforeEditProperty(entity.id, 'canonical')">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <div ng-show="form.property[entity.id].canonical.expanded == true">
+                                    <button ng-click="updateEntity(entity.id, 'canonical')">
+                                        <i class="fa fa-save"></i>
+                                    </button>
+                                    <button ng-click="form.property[entity.id].canonical.expanded = false">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row entity-container-panel" ng-show="$scope.form.attribute.expanded[entity.id]==true">
+                    <div class="col-md-2">
+                        <h1 class="entity-container-h1">Add Attribute</h1>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row v-pad-10">
+                            <span class="bold">Select Attribute</span>
+                        </div>
+                        <div class="row">
+                            <select ng-init="beforeAddAttribute(entity.id)"
+                                    ng-model="form.attribute.new[entity.id].attributeId">
+                                <option ng-repeat="attr in attributes" value="{a attr.id a}">{a attr.name a}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div ng-show="form.attribute.new[entity.id].attributeId != null">
+                            <div class="row v-pad-10">
+                                <span class="bold">Enter Data</span>
+                            </div>
+                            <div class="row mb-7"
+                                 ng-repeat="field in attributes[form.attribute.new[entity.id].attributeId].fields">
+                                <div class="col-xs-4">
+                                    <span>{a field.name a}</span>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input class="lh-20" ng-if="field.id != 'source'" type="text"
+                                           ng-model="form.attribute.new[entity.id].fields[field.id]">
+                                    <input class="lh-20" ng-if="field.id == 'source'" type="text"
+                                           ng-model="form.attribute.new[entity.id].fields[field.id]"
+                                           ng-init="form.attribute.new[entity.id].fields[field.id] = source">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <button class="button entity-action-button button-green" ng-click="addAttribute(entity.id)">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                        <button class="button entity-action-button button-red"
+                                ng-click="$scope.form.attribute.expanded[entity.id]=false">
+                            <i class="fa fa-remove"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div class="row entity-container-panel" ng-show="form.remove.entity[entity.id] == true">
+                    <div class="col-md-3">
+                        <span class="entity-container-h1">Remove Entity</span>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            Are you sure you want to remove this entity? This action cannot be undone.
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <button ng-click="form.remove.entity[entity.id] = false;"
+                                class="button button-small button-3d button-blue">
+                            <i class="fa fa-backward"></i>
+                            No, Cancel
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button ng-click="removeEntity(entity.id)"
+                                class="button button-small button-3d button-blue">
+                            <i class="fa fa-trash"></i>
+                            Yes, Remove
+                        </button>
+                    </div>
+                </div>
+                <div class="row entity-container-footer">
+                    <div class="col-md-12" align="right">
+                        <button class="button entity-action-button button-green"
+                                ng-click="$scope.form.attribute.expanded[entity.id]=true">
+                            <i class="fa fa-plus-circle"></i>
+                            Add Attribute
+                        </button>
+
+                        <button ng-click="form.remove.entity[entity.id] = true"
+                                class="button entity-action-button button-red">
+                            <i class="fa fa-trash"></i>
+                            Remove Entity
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
