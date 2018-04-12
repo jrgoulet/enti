@@ -1,5 +1,6 @@
 define([
-	'./range',
-	'./to_array'
+    './range',
+    './to_array',
+    './entityType'
 ], function () {
 });

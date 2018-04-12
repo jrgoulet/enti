@@ -15,6 +15,8 @@ define(['./module'], function (controllers) {
             $scope.attrSvc = attrSvc;
             $scope.entitySvc = entitySvc;
 
+            $scope.entityFilter = 'all';
+            $scope.selectedEntity = null;
 
             $scope.view = 'default';
             $scope.uploader = new FileUploader();
@@ -28,6 +30,17 @@ define(['./module'], function (controllers) {
             $scope.exportEntities = function () {
                 n.info('Export', 'Preparing entities for export');
                 io.emit('entity.export.all', null);
+            };
+
+            $scope.selectEntity = function(entityId) {
+              console.log('Setting selected entity to: ' + entityId);
+              $scope.selectedEntity = entityId;
+              console.log('Selected Entity: ' + $scope.selectedEntity);
+            };
+
+            $scope.beforeAddEntity = function() {
+                $scope.selectedEntity = null;
+                $scope.form.add.entity.expanded = true;
             };
 
             $scope.form = {
@@ -61,6 +74,11 @@ define(['./module'], function (controllers) {
             };
 
             $scope.hover = {};
+
+            $scope.setFilter = function (filter) {
+                console.log('Filter set to ' + filter);
+                $scope.entityFilter = filter;
+            };
 
             $scope.addEntity = function () {
                 io.emit('entity.add', {

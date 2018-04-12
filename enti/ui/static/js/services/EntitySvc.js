@@ -1,12 +1,12 @@
 define(['./module'], function (services) {
-	'use strict';
-	services.factory('EntitySvc', ['IOSvc',
-		function (io) {
+    'use strict';
+    services.factory('EntitySvc', ['IOSvc',
+        function (io) {
 
-	        var entities = {};
+            var entities = {};
 
-			return {
-				entities: entities,
+            return {
+                entities: entities,
                 syncAll: syncAll,
                 sync: sync,
                 export: export_,
@@ -16,9 +16,9 @@ define(['./module'], function (services) {
                 update: update,
                 remove: remove,
                 download: download
-			};
+            };
 
-			//////////////////////////////////////////////////
+            //////////////////////////////////////////////////
 
             function syncAll(data) {
                 entities = data;
@@ -88,5 +88,5 @@ define(['./module'], function (services) {
             }
 
 
-		}])
+        }])
 });
