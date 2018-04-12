@@ -79,13 +79,57 @@ body * {
 .entity-type-list-button {
     line-height: 30px;
     width: 100%;
-    padding: 5px;
+    padding: 5px 20px;
     font-size: 15px;
     font-weight: 500;
     border: 0;
     border-bottom: 1px solid #cccccc42;
     text-align: left;
     border-radius: 0;
+}
+
+.text-dark {
+	color: #111 !important;
+}
+
+.s11 {
+	font-size: 11px;
+}
+
+.s12 {
+	font-size: 12px;
+}
+
+.s13 {
+	font-size: 13px;
+}
+
+.s14 {
+	font-size: 14px;
+}
+
+.s15 {
+    font-size: 15px;
+}
+
+.s21 {
+    font-size: 21px;
+}
+
+.s200 {
+	font-weight: 200 !important;
+}
+
+.s300 {
+	font-weight: 300 !important;
+}
+
+.s400 {
+	font-weight: 400 !important;
+}
+
+.s500 {
+	font-weight: 500 !important;
 }
 
 .entity-li-active {

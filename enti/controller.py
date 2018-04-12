@@ -21,13 +21,11 @@ class Controller:
     def sync_attributes(self):
 
         with session_scope() as session:
-
-            attr_json = {a.id:a.json() for a in Query.Attribute.all(session)}
+            attr_json = {a.id: a.json() for a in Query.Attribute.all(session)}
 
             for attr_id in attr_json.keys():
-
                 linked_fields = {
-                    lf.field_id:Query.AttributeField.get(session, lf.field_id).json()
+                    lf.field_id: Query.AttributeField.get(session, lf.field_id).json()
                     for lf in Query.LinkedAttributeField.filter(session, attr_id)
                 }
 
@@ -38,19 +36,16 @@ class Controller:
     def sync_entity_types(self):
 
         with session_scope() as session:
-
-            type_json = {t.id:t.json() for t in Query.EntityType.all(session)}
+            type_json = {t.id: t.json() for t in Query.EntityType.all(session)}
 
             return type_json
 
     def sync_arity_types(self):
 
         with session_scope() as session:
-
-            arity_json = {a.id:a.json() for a in Query.ArityType.all(session)}
+            arity_json = {a.id: a.json() for a in Query.ArityType.all(session)}
 
             return arity_json
-
 
     def update_attribute(self, field_id, value):
 
@@ -73,7 +68,6 @@ class Controller:
 
         entity_json = self.sync_entities()
         export_entity_xml(entity_json)
-
 
     def add_entity(self, data):
 
@@ -117,9 +111,6 @@ class Controller:
                 session.delete(attribute)
             session.delete(entity)
 
-
-
-
     def update_entity(self, entity_id, data):
 
         with session_scope() as session:
@@ -145,11 +136,9 @@ class Controller:
                 canonical = canonical.lower() == 'true'
             entity.canonical = canonical
 
-
     def remove_attribute(self, attribute_id):
 
         with session_scope() as session:
-
             attribute = Query.EntityAttribute.get(session, attribute_id)
             fields = Query.EntityAttributeField.filter(session, attribute_id)
 
@@ -161,9 +150,39 @@ class Controller:
     def add_attribute(self, entity_id, attribute_id, fields):
 
         with session_scope() as session:
+
+            attr = Query.Attribute.get(session, attribute_id)
+
+            existing_entity_attrs = Query.EntityAttribute.filter(session, entity_id=entity_id,
+                                                                 attribute_id=attribute_id)
+            if attr.arity_id.lower() == "one":
+
+                if len(existing_entity_attrs) > 0:
+                    raise Exception('Arity restriction on attribute {} is preventing the addition of another value. To'
+                                    ' continue, please modify or remove the existing entry for this attribute.'.format(
+                        attribute_id))
+
             attribute = EntityAttribute(entity_id, attribute_id)
             session.add(attribute)
             session.commit()
+
+            for existing_attr in existing_entity_attrs:
+                matches = 0
+
+                for field_id, value in fields.items():
+                    lf = Query.LinkedAttributeField.filter(session, attribute_id, field_id)
+                    if lf is not None:
+                        existing_field = Query.EntityAttributeField.filter(session, entity_attribute_id=existing_attr.id, linked_field_id=lf.id)
+
+                        if existing_field is not None:
+
+                            if existing_field.value == value:
+                                matches += 1
+                    else:
+                        raise Exception('Field {} not linked to attribute {}'.format(field_id, attribute_id))
+
+                if matches == len(fields.keys()):
+                    raise Exception('Duplicate entry: An entity attribute with the provided values already exists.')
 
             for field_id, value in fields.items():
                 lf = Query.LinkedAttributeField.filter(session, attribute_id, field_id)
@@ -177,11 +196,9 @@ class Controller:
     def sync_entity(self, entity_id):
 
         with session_scope() as session:
-
             entity = Query.Entity.get(session, entity_id)
 
             if entity is not None:
-
                 entity_json = entity.json()
                 entity_json['attributes'] = self.sync_entity_attrs(session, entity_id)
 
@@ -220,15 +237,12 @@ class Controller:
     def sync_entities(self):
 
         with session_scope() as session:
-
-            entity_json = {e.id:e.json() for e in Query.Entity.all(session)}
+            entity_json = {e.id: e.json() for e in Query.Entity.all(session)}
 
             for entity_id in entity_json.keys():
-
                 entity_json[entity_id]['attributes'] = self.sync_entity_attrs(session, entity_id)
 
             return entity_json
-
 
     def upload_xml(self):
 
@@ -241,7 +255,3 @@ class Controller:
                         log.info('Entity extraction successful, starting import')
                         import_entities(entities)
                 os.remove(filename)
-
-
-
-

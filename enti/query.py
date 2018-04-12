@@ -65,7 +65,7 @@ class Query:
             return session.query(EntityAttribute).filter(
                 EntityAttribute.entity_id == entity_id,
                 EntityAttribute.attribute_id == attribute_id
-            )
+            ).all()
 
     class AttributeField:
         @staticmethod
