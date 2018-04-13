@@ -1,0 +1,22 @@
+<div class="col-md-3">
+    <span class="entity-container-h1">Remove Entity</span>
+</div>
+<div class="col-md-3">
+    <p>
+        Are you sure you want to remove this entity? This action cannot be undone.
+    </p>
+</div>
+<div class="col-md-3">
+    <button ng-click="form.remove.entity[selectedEntity] = false;"
+            class="button button-small button-3d button-blue">
+        <i class="fa fa-backward"></i>
+        No, Cancel
+    </button>
+</div>
+<div class="col-md-3">
+    <button ng-click="removeEntity(selectedEntity)"
+            class="button button-small button-3d button-blue">
+        <i class="fa fa-trash"></i>
+        Yes, Remove
+    </button>
+</div>

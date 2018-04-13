@@ -1,0 +1,19 @@
+<div class="row entity-header-row">
+    <div class="col-md-12">
+        <span class="entity-header-name">Import Entities</span>
+    </div>
+</div>
+<div class="row entity-container-panel">
+    <div class="col-md-4">
+        <h1 class="entity-container-h1">Select XML File</h1>
+    </div>
+    <div class="col-md-8">
+        <input type="file" nv-file-select uploader="uploader" options="{url: '/upload'}"/><br/>
+        <ul>
+            <li ng-repeat="item in uploader.queue">
+                Name: <span ng-bind="item.file.name"></span><br/>
+                <button class="button button-3d button-blue button-small" ng-click="item.upload()">Upload</button>
+            </li>
+        </ul>
+    </div>
+</div>

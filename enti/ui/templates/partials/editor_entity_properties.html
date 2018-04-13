@@ -1,0 +1,105 @@
+<div class="col-md-2">
+    <h1 class="entity-container-h1">Properties</h1>
+</div>
+<div class="col-md-10">
+    <div class="row" ng-mouseover="form.property[selectedEntity].id.hover = true"
+         ng-mouseleave="form.property[selectedEntity].id.hover = false">
+        <div class="col-md-3" align="right">
+            <span class="attribute-name">Entity ID</span>
+        </div>
+        <div class="col-md-3 lh-40" align="left">
+                            <span ng-show="form.property[selectedEntity].id.expanded == false"
+                                  class="entity-property-value">{a selectedEntity a}</span>
+            <input class="lh-20" type="text"
+                   ng-model="form.property[selectedEntity].id.edit"
+                   ng-show="form.property[selectedEntity].id.expanded == true">
+        </div>
+    </div>
+    <div class="row" ng-mouseover="form.property[selectedEntity].name.hover = true"
+         ng-mouseleave="form.property[selectedEntity].name.hover = false">
+        <div class="col-md-3" align="right">
+            <span class="attribute-name">Entity Name</span>
+        </div>
+        <div class="col-md-3 lh-40" align="left">
+                            <span ng-show="form.property[selectedEntity].name.expanded == false"
+                                  class="entity-property-value">{a entities[selectedEntity].name a}</span>
+            <input class="lh-20" type="text"
+                   ng-model="form.property[selectedEntity].name.edit"
+                   ng-show="form.property[selectedEntity].name.expanded == true">
+        </div>
+        <div class="col-md-3">
+            <button ng-show="form.property[selectedEntity].name.hover == true && form.property[selectedEntity].name.expanded == false"
+                    ng-click="beforeEditProperty(selectedEntity, 'name')">
+                <i class="fa fa-edit"></i>
+            </button>
+            <div ng-show="form.property[selectedEntity].name.expanded == true">
+                <button ng-click="updateEntity(selectedEntity, 'name')">
+                    <i class="fa fa-save"></i>
+                </button>
+                <button ng-click="form.property[selectedEntity].name.expanded = false">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-mouseover="form.property[selectedEntity].type.hover = true"
+         ng-mouseleave="form.property[selectedEntity].type.hover = false">
+        <div class="col-md-3" align="right">
+            <span class="attribute-name">Entity Type</span>
+        </div>
+        <div class="col-md-3 lh-40" align="left">
+                            <span ng-show="form.property[selectedEntity].type.expanded == false"
+                                  class="entity-property-value">{a entities[selectedEntity].type a}</span>
+            <select ng-model="form.property[selectedEntity].type.edit"
+                    ng-show="form.property[selectedEntity].type.expanded == true">
+                <option ng-repeat="entityType in entityTypes | toArray" value="{a entityType.id a}">
+                    {a entityType.name a}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button ng-show="form.property[selectedEntity].type.hover == true && form.property[selectedEntity].type.expanded == false"
+                    ng-click="beforeEditProperty(selectedEntity, 'type')">
+                <i class="fa fa-edit"></i>
+            </button>
+            <div ng-show="form.property[selectedEntity].type.expanded == true">
+                <button ng-click="updateEntity(selectedEntity, 'type')">
+                    <i class="fa fa-save"></i>
+                </button>
+                <button ng-click="form.property[selectedEntity].type.expanded = false">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row"
+         ng-mouseover="form.property[selectedEntity].canonical.hover = true"
+         ng-mouseleave="form.property[selectedEntity].canonical.hover = false">
+        <div class="col-md-3" align="right">
+            <span class="attribute-name">Canonical</span>
+        </div>
+        <div class="col-md-3 lh-40" align="left">
+                            <span ng-show="form.property[selectedEntity].canonical.expanded == false"
+                                  class="entity-property-value">{a entities[selectedEntity].canonical a}</span>
+            <select ng-model="form.property[selectedEntity].canonical.edit"
+                    ng-show="form.property[selectedEntity].canonical.expanded == true">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button ng-show="form.property[selectedEntity].canonical.hover == true && form.property[selectedEntity].canonical.expanded == false"
+                    ng-click="beforeEditProperty(selectedEntity, 'canonical')">
+                <i class="fa fa-edit"></i>
+            </button>
+            <div ng-show="form.property[selectedEntity].canonical.expanded == true">
+                <button ng-click="updateEntity(selectedEntity, 'canonical')">
+                    <i class="fa fa-save"></i>
+                </button>
+                <button ng-click="form.property[selectedEntity].canonical.expanded = false">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

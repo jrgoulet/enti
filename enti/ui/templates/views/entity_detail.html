@@ -1,0 +1,37 @@
+<div class="row entity-header-row">
+    <div class="col-xs-8">
+        <span class="entity-header-name">{a entities[selectedEntity].name a}</span>
+        <span class="entity-header-type">{a entityTypes[entities[selectedEntity].type].name a}</span>
+    </div>
+    <div class="col-xs-4" align="right">
+        <span class="entity-header-id">{a selectedEntity a}</span>
+    </div>
+</div>
+<div class="row entity-container-panel">
+    {% include "partials/editor_entity_properties.html" %}
+</div>
+<div class="row entity-container-panel">
+    {% include "partials/editor_entity_attributes.html" %}
+</div>
+<div class="row entity-container-panel"
+     ng-show="$scope.form.attribute.expanded[selectedEntity]==true">
+    {% include "partials/editor_entity_add_attribute.html" %}
+</div>
+<div class="row entity-container-panel" ng-show="form.remove.entity[selectedEntity] == true">
+    {% include "partials/editor_entity_remove_entity.html" %}
+</div>
+<div class="row entity-container-panel">
+    <div class="col-md-12" align="right">
+        <button class="button entity-action-button button-green"
+                ng-click="$scope.form.attribute.expanded[selectedEntity]=true">
+            <i class="fa fa-plus-circle"></i>
+            Add Attribute
+        </button>
+
+        <button ng-click="form.remove.entity[selectedEntity] = true"
+                class="button entity-action-button button-red">
+            <i class="fa fa-trash"></i>
+            Remove Entity
+        </button>
+    </div>
+</div>

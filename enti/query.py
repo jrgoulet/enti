@@ -60,7 +60,7 @@ class Query:
         @staticmethod
         def filter(session, entity_id, attribute_id=None):
             if attribute_id is None:
-                return session.query(EntityAttribute).filter(EntityAttribute.entity_id == entity_id)
+                return session.query(EntityAttribute).filter(EntityAttribute.entity_id == entity_id).all()
 
             return session.query(EntityAttribute).filter(
                 EntityAttribute.entity_id == entity_id,
@@ -92,7 +92,7 @@ class Query:
                     LinkedAttributeField.attribute_id == attribute_id,
                     LinkedAttributeField.field_id == field_id
                 ).first()
-            return session.query(LinkedAttributeField).filter(LinkedAttributeField.attribute_id == attribute_id)
+            return session.query(LinkedAttributeField).filter(LinkedAttributeField.attribute_id == attribute_id).all()
 
     class EntityAttributeField:
         @staticmethod
@@ -107,7 +107,7 @@ class Query:
         def filter(session, entity_attribute_id, linked_field_id=None):
                 if linked_field_id is None:
                     return session.query(EntityAttributeField).filter(
-                        EntityAttributeField.entity_attribute_id == entity_attribute_id)
+                        EntityAttributeField.entity_attribute_id == entity_attribute_id).all()
                 return session.query(EntityAttributeField).filter(
                     EntityAttributeField.entity_attribute_id == entity_attribute_id,
                     EntityAttributeField.linked_field_id == linked_field_id

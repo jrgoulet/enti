@@ -42,7 +42,7 @@ class ArityTypes(TypeEnum):
 class EntityTypes(TypeEnum):
 
     PERSON = EntityType('PERSON', 'Person')
-    GPE = EntityType('GPE', 'Global Political Entity')
+    GPE = EntityType('GPE', 'Geopolitical Entity')
     LOCATION = EntityType ('LOCATION', 'Location')
     FIN_INST = EntityType('FIN_INST', 'Financial Institution')
     PHONE = EntityType('PHONE', 'Phone Number')

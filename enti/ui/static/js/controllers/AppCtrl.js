@@ -75,6 +75,11 @@ define(['./module'], function (controllers) {
                     entity: {
                         expanded: {}
                     }
+                },
+                settings: {
+                    source: {
+                        expanded: false
+                    }
                 }
             };
 

@@ -117,6 +117,7 @@ def remove_entity(data):
 @socketio.on('xml.upload', namespace='/')
 def upload_xml(null):
     controller.upload_xml()
+    emit('entity.sync.all', controller.sync_entities())
 
 @socketio.on('attribute.update', namespace='/')
 def update_attribute(data):

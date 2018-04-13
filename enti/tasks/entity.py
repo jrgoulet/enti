@@ -35,6 +35,8 @@ def import_entities(entities_json):
                 if Query.EntityType.get(session, e['type']) is None:
                     session.add(EntityType(id=e['type'],
                                            name=e['type'].replace('_', ' ').title()))
+                    session.commit()
+
                 entity = Entity(id=e['id'],
                                 name=e['name'],
                                 type=e['type'],

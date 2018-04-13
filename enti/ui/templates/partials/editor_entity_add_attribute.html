@@ -1,0 +1,46 @@
+<div class="col-md-2">
+    <h1 class="entity-container-h1">Add Attribute</h1>
+</div>
+<div class="col-md-3">
+    <div class="row v-pad-10">
+        <span class="bold">Select Attribute</span>
+    </div>
+    <div class="row">
+        <select ng-init="beforeAddAttribute(selectedEntity)"
+                ng-model="form.attribute.new[selectedEntity].attributeId">
+            <option ng-repeat="attr in attributes" value="{a attr.id a}">{a attr.name a}</option>
+        </select>
+    </div>
+</div>
+<div class="col-md-3">
+    <div ng-show="form.attribute.new[selectedEntity].attributeId != null">
+        <div class="row v-pad-10">
+            <span class="bold">Enter Data</span>
+        </div>
+        <div class="row mb-7"
+             ng-repeat="field in attributes[form.attribute.new[selectedEntity].attributeId].fields">
+            <div class="col-xs-4">
+                <span>{a field.name a}</span>
+            </div>
+            <div class="col-xs-8">
+                <input class="lh-20" ng-if="field.id != 'source'" type="text"
+                       ng-model="form.attribute.new[selectedEntity].fields[field.id]">
+                <input class="lh-20" ng-if="field.id == 'source'" type="text"
+                       ng-model="form.attribute.new[selectedEntity].fields[field.id]"
+                       ng-init="form.attribute.new[selectedEntity].fields[field.id] = source">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4" align="right">
+    <button class="button entity-action-button button-green"
+            ng-click="addAttribute(selectedEntity)">
+        <i class="fa fa-save"></i>
+        Save
+    </button>
+    <button class="button entity-action-button button-red"
+            ng-click="$scope.form.attribute.expanded[selectedEntity]=false">
+        <i class="fa fa-remove"></i>
+        Cancel
+    </button>
+</div>
