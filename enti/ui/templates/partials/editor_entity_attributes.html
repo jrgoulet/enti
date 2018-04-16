@@ -3,19 +3,19 @@
 </div>
 <div class="col-md-10">
     <div class="entity-attribute-container"
-         ng-repeat="attribute in entities[selectedEntity].attributes | toArray">
+         ng-repeat="attr in entities[selectedEntity].attributes | toArray">
         <div class="row">
             <div class="col-md-3" align="right">
-                <span class="attribute-name">{a attribute.name a}</span>
+                <span class="attribute-name">{a attr.name a}</span>
             </div>
             <div class="col-md-9">
-                <div ng-repeat="entry in attribute.data"
+                <div ng-repeat="entry in attr.data"
                      ng-mouseover="hover[entry.id] = true"
                      ng-mouseleave="hover[entry.id] = false">
                     <div class="row">
                         <div class="col-xs-7">
                             <div ng-repeat="field in entry.fields">
-                                <div ng-init="initAttributeField(field.id)"
+                                <div ng-init="attribute.init.update(field.id)"
                                      class="row attribute-field-container"
                                      ng-mouseover="hover[field.id] = true"
                                      ng-mouseleave="hover[field.id] = false">
@@ -33,12 +33,12 @@
                                     </div>
                                     <div class="col-xs-4" align="right">
                                         <div ng-show="hover[field.id] == true && (form.attribute.edit[field.id] == null || form.attribute.edit[field.id].expanded == false)">
-                                            <button ng-click="beforeUpdateAttribute(field.id)">
+                                            <button ng-click="form.attribute.edit[field.id].expanded = true">
                                                 <i class="fa fa-edit"></i>
                                             </button>
                                         </div>
                                         <div ng-show="form.attribute.edit[field.id].expanded == true">
-                                            <button ng-click="updateAttribute(selectedEntity, attribute.id, field.id)">
+                                            <button ng-click="attribute.update(selectedEntity, attr.id, field.id)">
                                                 <i class="fa fa-save"></i>
                                             </button>
                                             <button ng-click="form.attribute.edit[field.id].expanded = false">
@@ -51,7 +51,7 @@
                         </div>
                         <div class="col-xs-3">
                             <div ng-show="hover[entry.id] == true">
-                                <button ng-click="removeAttribute(selectedEntity, entry.id)"
+                                <button ng-click="attribute.remove(selectedEntity, entry.id)"
                                         class="attribute-remove-button">
                                     <i class="fa fa-trash"></i>
                                 </button>

@@ -5,45 +5,18 @@ define(['./module'], function (controllers) {
         'EntitySvc', 'NotificationSvc', 'FileUploader',
         function ($rootScope, $http, $scope, $window, moment, io, attrSvc, entitySvc, n, FileUploader) {
 
-            console.log('AppCtrl');
-
-            $scope.attributes = {};
-            $scope.entities = {};
-            $scope.entityTypes = {};
-            $scope.source = 'testSource';
-
-            $scope.attrSvc = attrSvc;
-            $scope.entitySvc = entitySvc;
-
-            $scope.entityFilter = 'all';
-            $scope.selectedEntity = null;
 
             $scope.view = 'default';
-            $scope.uploader = new FileUploader();
-
-            $scope.attrForm = {
-                entityId: null,
-                attributeId: null,
-                fields: {}
+            /**
+             * Sets the main view
+             * @param view The name of the view
+             */
+            $scope.setView = function (view) {
+                console.log('View set to ' + view);
+                $scope.view = view;
             };
 
-            $scope.exportEntities = function () {
-                n.info('Export', 'Preparing entities for export');
-                io.emit('entity.export.all', null);
-            };
-
-            $scope.selectEntity = function (entityId) {
-                console.log('Setting selected entity to: ' + entityId);
-                $scope.view = 'entity';
-                $scope.selectedEntity = entityId;
-                $scope.initializeEntityProps(entityId);
-                console.log('Selected Entity: ' + $scope.selectedEntity);
-            };
-
-            $scope.beforeAddEntity = function () {
-                $scope.view = 'add';
-                $scope.form.add.entity.expanded = true;
-            };
+            //////////////////////////////////////////////////
 
             $scope.form = {
                 hover: {},
@@ -82,177 +55,272 @@ define(['./module'], function (controllers) {
                     }
                 }
             };
-
             $scope.hover = {};
 
-            $scope.setFilter = function (filter) {
-                console.log('Filter set to ' + filter);
-                $scope.entityFilter = filter;
-            };
+            //////////////////////////////////////////////////
 
-            $scope.addEntity = function () {
-                io.emit('entity.add', {
-                    id: $scope.form.add.entity.id,
-                    name: $scope.form.add.entity.name,
-                    type: $scope.form.add.entity.type,
-                    canonical: $scope.form.add.entity.canonical
-                });
-                $scope.form.add.entity.expanded = false;
-            };
+            $scope.uploader = new FileUploader();
 
-            $scope.reattemptAddEntity = function () {
-                $scope.form.add.entity.expanded = true;
-                n.warning('Add Entity', 'Please check new entity data and try again.');
-            };
-
-            $scope.confirmAddEntity = function () {
-                $scope.form.add.entity.id = null;
-                $scope.form.add.entity.name = null;
-                $scope.form.add.entity.type = null;
-                $scope.form.add.entity.canonical = true;
-            };
-
-            $scope.initializeEntityProps = function (entityId) {
-                $scope.form.property[entityId] = {
-                    id: {
-                        hover: false,
-                        expanded: false,
-                        edit: null
-                    },
-                    name: {
-                        hover: false,
-                        expanded: false,
-                        edit: null
-                    },
-                    type: {
-                        hover: false,
-                        expanded: false,
-                        edit: null
-                    },
-                    canonical: {
-                        hover: false,
-                        expanded: false,
-                        edit: null
-                    }
-                }
-            };
-
-            $scope.updateEntity = function (entityId, property) {
-                var entity = {
-                    id: $scope.entities[entityId].id,
-                    name: $scope.entities[entityId].name,
-                    type: $scope.entities[entityId].type,
-                    canonical: $scope.entities[entityId].canonical
-                };
-                entity[property] = $scope.form.property[entityId][property].edit;
-                io.emit('entity.update', entity);
-                $scope.form.property[entityId][property].expanded = false;
-            };
-
-            $scope.beforeEditProperty = function (entityId, property) {
-                $scope.form.property[entityId][property].expanded = true;
-                $scope.form.property[entityId][property].edit = $scope.entities[entityId][property];
-            };
-
-            $scope.initializeContainerItem = function (entityId) {
-                if ($scope.form.expanded[entityId] == null) {
-                    $scope.form.expanded[entityId] = false;
-                }
-            };
-
-            $scope.beforeAddAttribute = function (entityId) {
-                $scope.form.attribute.new[entityId] = {
-                    attributeId: null,
-                    fields: {}
-                };
-            };
-
-            $scope.addAttribute = function (entityId) {
-                console.log('Add attribute: ' + entityId + ', ' + $scope.form.attribute.new[entityId].attributeId);
-                console.log($scope.form.attribute.new[entityId].fields);
-                io.emit('attribute.add', {
-                    entityId: entityId,
-                    attributeId: $scope.form.attribute.new[entityId].attributeId,
-                    fields: $scope.form.attribute.new[entityId].fields
-                });
-            };
-
-            $scope.removeAttribute = function (entityId, attributeId) {
-                console.log('Remove attribute: ' + entityId + ', ' + attributeId);
-                io.emit('attribute.remove', {
-                    entityId: entityId,
-                    attributeId: attributeId
-                })
-            };
-
-            $scope.initAttributeField = function (fieldId) {
-                if ($scope.form.attribute.edit[fieldId] == null) {
-                    $scope.form.attribute.edit[fieldId] = {
-                        expanded: false,
-                        value: null
-                    };
-                }
-            };
-
-            $scope.beforeUpdateAttribute = function (fieldId) {
-                $scope.initAttributeField(fieldId);
-                $scope.form.attribute.edit[fieldId].expanded = !$scope.form.attribute.edit[fieldId].expanded;
-            };
-
-            $scope.updateAttribute = function (entityId, attributeId, fieldId) {
-                n.info('Updating Attribute', 'Updating ' + $scope.entities[entityId].name + ' field to ' + $scope.form.attribute.edit[fieldId].value);
-                io.emit('attribute.update', {
-                    entityId: entityId,
-                    fieldId: fieldId,
-                    value: $scope.form.attribute.edit[fieldId].value
-                });
-                $scope.form.attribute.edit[fieldId].expanded = false;
-                console.log('Update attribute: ' + entityId + ', ' + attributeId + ', ' + fieldId)
-            };
-
+            /**
+             * Callback used after adding a file to the upload queue
+             * @param file The file added to the queue
+             */
             $scope.uploader.onAfterAddingFile = function (file) {
                 console.log('File added');
                 console.log(file);
             };
 
+            /**
+             * Callback used after an upload fails
+             * @param item The item that failed to upload
+             * @param response The response given by the controller
+             * @param status The response status
+             * @param headers Response headers
+             */
             $scope.uploader.onErrorItem = function (item, response, status, headers) {
                 item.remove();
                 n.warning('Upload failed', 'Ensure that the file is a valid XML file.')
             };
 
+            /**
+             * Callback used after successfully uploading an item
+             * @param item The item
+             * @param response The response given by the controller
+             * @param status The response status
+             * @param headers Response headers
+             */
             $scope.uploader.onSuccessItem = function (item, response, status, headers) {
                 item.remove();
                 n.info('Upload successful', 'The XML file has been uploaded successfully.');
                 io.emit('xml.upload', null)
             };
 
+            //////////////////////////////////////////////////
 
-            $scope.setView = function (view) {
-                console.log('View set to ' + view);
-                $scope.view = view;
-            };
-
-            $scope.util = {
-                isEmpty: function (dict) {
-                    if (dict !== null && typeof dict === 'object') {
-                        return Object.keys(dict).length === 0;
+            $scope.entities = {};
+            $scope.entityTypes = {};
+            $scope.entitySvc = entitySvc;
+            $scope.entityFilter = 'all';
+            $scope.selectedEntity = null;
+            $scope.entity = {
+                init: {
+                    /**
+                     * Navigate to the add entity view
+                     */
+                    add: function () {
+                        $scope.view = 'add';
+                        $scope.form.add.entity.expanded = true;
+                    },
+                    /**
+                     * Navigate to the import entity view
+                     */
+                    import: function () {
+                        $scope.view = 'import';
+                        $scope.selectedEntity = null;
+                    },
+                    /**
+                     * Initialize editor form for entity properties
+                     * @param entityId The ID of the entity being modified
+                     */
+                    props: function (entityId) {
+                        $scope.form.property[entityId] = {
+                            id: {
+                                hover: false,
+                                expanded: false,
+                                edit: null
+                            },
+                            name: {
+                                hover: false,
+                                expanded: false,
+                                edit: null
+                            },
+                            type: {
+                                hover: false,
+                                expanded: false,
+                                edit: null
+                            },
+                            canonical: {
+                                hover: false,
+                                expanded: false,
+                                edit: null
+                            }
+                        }
+                    },
+                    edit: {
+                        /**
+                         * Initialize the field editor for an entity property
+                         * @param entityId The ID of the entity being modified
+                         * @param property The property being modified
+                         */
+                        props: function (entityId, property) {
+                            $scope.form.property[entityId][property].expanded = true;
+                            $scope.form.property[entityId][property].edit = $scope.entities[entityId][property];
+                        }
                     }
-                    return true
+                },
+                /**
+                 * Select an entity to view/edit details
+                 * @param entityId The ID of the entity to inspect
+                 */
+                select: function (entityId) {
+                    console.log('Selecting entity:' + entityId);
+                    $scope.view = 'entity';
+                    $scope.selectedEntity = entityId;
+                    $scope.entity.init.props(entityId);
+                },
+                /**
+                 * Export all entities
+                 */
+                export: function () {
+                    n.info('Export', 'Preparing entities for export');
+                    io.emit('entity.export.all', null);
+                },
+                add: {
+                    /**
+                     * Add an entity
+                     */
+                    submit: function () {
+                        io.emit('entity.add', {
+                            id: $scope.form.add.entity.id,
+                            name: $scope.form.add.entity.name,
+                            type: $scope.form.add.entity.type,
+                            canonical: $scope.form.add.entity.canonical
+                        });
+                        $scope.form.add.entity.expanded = false;
+                    },
+                    /**
+                     * Add entity failure callback
+                     * Prompts user for another attempt
+                     */
+                    reattempt: function () {
+                        $scope.form.add.entity.expanded = true;
+                        n.warning('Add Entity', 'Please check new entity data and try again.');
+                    },
+                    /**
+                     * Add entity success callback
+                     * Resets the add entity form
+                     */
+                    confirm: function () {
+                        $scope.form.add.entity.id = null;
+                        $scope.form.add.entity.name = null;
+                        $scope.form.add.entity.type = null;
+                        $scope.form.add.entity.canonical = true;
+                    }
+                },
+                /**
+                 * Update an entity
+                 * @param entityId The ID of the entity
+                 * @param property The property (name, type, canonical) to modify
+                 */
+                update: function (entityId, property) {
+                    var entity = {
+                        id: $scope.entities[entityId].id,
+                        name: $scope.entities[entityId].name,
+                        type: $scope.entities[entityId].type,
+                        canonical: $scope.entities[entityId].canonical
+                    };
+                    entity[property] = $scope.form.property[entityId][property].edit;
+                    io.emit('entity.update', entity);
+                    $scope.form.property[entityId][property].expanded = false;
+                },
+                /**
+                 * Remove an entity
+                 * @param entityId The ID of the entity
+                 */
+                remove: function (entityId) {
+                    io.emit('entity.remove', {
+                        id: entityId
+                    });
+                    $scope.selectedEntity = null;
+                    delete $scope.entities[entityId];
+                    delete entitySvc.entities[entityId];
+                },
+                /**
+                 * Filters entities
+                 * Set by 1st column, displayed in 2nd column
+                 * @param filter
+                 */
+                filter: function(filter) {
+                    console.log('Filter set to ' + filter);
+                    $scope.entityFilter = filter;
                 }
             };
 
-            $scope.beforeImport = function() {
-                $scope.view = 'import';
-                $scope.selectedEntity = null;
+            //////////////////////////////////////////////////
+
+            $scope.attributes = {};
+            $scope.attrSvc = attrSvc;
+            $scope.source = 'default';
+            $scope.attribute = {
+                init: {
+                    /**
+                     * Initialize the Add Attribute form for the editor
+                     * @param entityId The ID of the entity to modify
+                     */
+                    add: function (entityId) {
+                        $scope.form.attribute.new[entityId] = {
+                            attributeId: null,
+                            fields: {}
+                        };
+                    },
+                    /**
+                     * Initialize an EntityAttributeField form for editing
+                     * @param fieldId The ID of the EntityAttributeField to modify
+                     */
+                    update: function (fieldId) {
+                        if ($scope.form.attribute.edit[fieldId] == null) {
+                            $scope.form.attribute.edit[fieldId] = {
+                                expanded: false,
+                                value: null
+                            };
+                        }
+                    }
+                },
+                /**
+                 * Add an attribute to an entity
+                 * @param entityId The ID of the entity to modify
+                 */
+                add: function (entityId) {
+                    console.log('Add attribute: ' + entityId + ', ' + $scope.form.attribute.new[entityId].attributeId);
+                    console.log($scope.form.attribute.new[entityId].fields);
+                    io.emit('attribute.add', {
+                        entityId: entityId,
+                        attributeId: $scope.form.attribute.new[entityId].attributeId,
+                        fields: $scope.form.attribute.new[entityId].fields
+                    });
+                    $scope.attribute.init.add(entityId);
+                },
+                /**
+                 * Remove an attribute from an entity
+                 * @param entityId The ID of the entity to modify
+                 * @param attributeId The ID of the EntityAttribute to remove
+                 */
+                remove: function (entityId, attributeId) {
+                    console.log('Remove attribute: ' + entityId + ', ' + attributeId);
+                    io.emit('attribute.remove', {
+                        entityId: entityId,
+                        attributeId: attributeId
+                    })
+                },
+                /**
+                 * Update an EntityAttributeField's value
+                 * @param entityId The ID of the entity to modify
+                 * @param attributeId The ID of the EntityAttribute to modify
+                 * @param fieldId The ID of the EntityAttributeField to modify
+                 */
+                update: function (entityId, attributeId, fieldId) {
+                    n.info('Updating Attribute', 'Updating ' + $scope.entities[entityId].name + ' field to ' + $scope.form.attribute.edit[fieldId].value);
+                    io.emit('attribute.update', {
+                        entityId: entityId,
+                        fieldId: fieldId,
+                        value: $scope.form.attribute.edit[fieldId].value
+                    });
+                    $scope.form.attribute.edit[fieldId].expanded = false;
+                    console.log('Update attribute: ' + entityId + ', ' + attributeId + ', ' + fieldId)
+                }
             };
 
-            $scope.removeEntity = function (entityId) {
-                io.emit('entity.remove', {
-                    id: entityId
-                });
-                delete $scope.entities[entityId];
-                delete entitySvc.entities[entityId];
-            };
+            //////////////////////////////////////////////////
 
             io.on('attribute.sync', function (attributes) {
                 $scope.attributes = attrSvc.sync(attributes);
@@ -271,12 +339,12 @@ define(['./module'], function (controllers) {
             });
 
             io.on('entity.add.success', function () {
-                $scope.confirmAddEntity();
+                $scope.entity.add.confirm();
                 n.info('Add Entity', 'Entity added successfully.');
             });
 
             io.on('entity.add.failure', function () {
-                $scope.reattemptAddEntity();
+                $scope.entity.add.reattempt();
             });
 
             io.on('entity.export.all.success', function () {

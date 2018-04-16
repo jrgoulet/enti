@@ -29,11 +29,11 @@
         </div>
         <div class="col-md-3">
             <button ng-show="form.property[selectedEntity].name.hover == true && form.property[selectedEntity].name.expanded == false"
-                    ng-click="beforeEditProperty(selectedEntity, 'name')">
+                    ng-click="entity.init.edit.props(selectedEntity, 'name')">
                 <i class="fa fa-edit"></i>
             </button>
             <div ng-show="form.property[selectedEntity].name.expanded == true">
-                <button ng-click="updateEntity(selectedEntity, 'name')">
+                <button ng-click="entity.update(selectedEntity, 'name')">
                     <i class="fa fa-save"></i>
                 </button>
                 <button ng-click="form.property[selectedEntity].name.expanded = false">
@@ -59,11 +59,11 @@
         </div>
         <div class="col-md-3">
             <button ng-show="form.property[selectedEntity].type.hover == true && form.property[selectedEntity].type.expanded == false"
-                    ng-click="beforeEditProperty(selectedEntity, 'type')">
+                    ng-click="entity.init.edit.props(selectedEntity, 'type')">
                 <i class="fa fa-edit"></i>
             </button>
             <div ng-show="form.property[selectedEntity].type.expanded == true">
-                <button ng-click="updateEntity(selectedEntity, 'type')">
+                <button ng-click="entity.update(selectedEntity, 'type')">
                     <i class="fa fa-save"></i>
                 </button>
                 <button ng-click="form.property[selectedEntity].type.expanded = false">
@@ -89,11 +89,11 @@
         </div>
         <div class="col-md-3">
             <button ng-show="form.property[selectedEntity].canonical.hover == true && form.property[selectedEntity].canonical.expanded == false"
-                    ng-click="beforeEditProperty(selectedEntity, 'canonical')">
+                    ng-click="entity.init.edit.props(selectedEntity, 'canonical')">
                 <i class="fa fa-edit"></i>
             </button>
             <div ng-show="form.property[selectedEntity].canonical.expanded == true">
-                <button ng-click="updateEntity(selectedEntity, 'canonical')">
+                <button ng-click="entity.update(selectedEntity, 'canonical')">
                     <i class="fa fa-save"></i>
                 </button>
                 <button ng-click="form.property[selectedEntity].canonical.expanded = false">

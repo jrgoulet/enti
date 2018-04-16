@@ -1,9 +1,9 @@
-<div ng-repeat="entity in entities | toArray | entityType:entityFilter | orderBy:'name'">
+<div ng-repeat="e in entities | toArray | entityType:entityFilter | orderBy:'name'">
     <div class="row">
         <div class="col-md-12">
-            <button ng-click="selectEntity(entity.id)"
-                    ng-class="{'entity-type-list-button': true, 'entity-li-active':selectedEntity===entity.id}">
-                {a entity.name a}
+            <button ng-click="entity.select(e.id)"
+                    ng-class="{'entity-type-list-button': true, 'entity-li-active':selectedEntity===e.id}">
+                {a e.name a}
             </button>
         </div>
     </div>

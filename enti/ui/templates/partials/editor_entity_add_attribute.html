@@ -6,7 +6,7 @@
         <span class="bold">Select Attribute</span>
     </div>
     <div class="row">
-        <select ng-init="beforeAddAttribute(selectedEntity)"
+        <select ng-init="attribute.init.add(selectedEntity)"
                 ng-model="form.attribute.new[selectedEntity].attributeId">
             <option ng-repeat="attr in attributes" value="{a attr.id a}">{a attr.name a}</option>
         </select>
@@ -34,7 +34,7 @@
 </div>
 <div class="col-md-4" align="right">
     <button class="button entity-action-button button-green"
-            ng-click="addAttribute(selectedEntity)">
+            ng-click="attribute.add(selectedEntity)">
         <i class="fa fa-save"></i>
         Save
     </button>
