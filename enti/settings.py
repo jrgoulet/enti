@@ -21,11 +21,18 @@ class UIConfig:
 
 class FileConfig:
     SRC_ROOT = os.path.join(os.curdir, 'enti')
+
+    EXPORT_FILENAME = 'export.xml'
+
     SCHEMA_DIR = os.path.abspath(os.path.join(SRC_ROOT,'schema'))
     DATA_DIR = os.path.abspath(os.path.join(SRC_ROOT,'data'))
     EXPORT_DIR = os.path.abspath(os.path.join(SRC_ROOT,'export'))
     ATTR_SCHEMA_FILE = os.path.join(SCHEMA_DIR,'attributes.yml')
-    EXPORT_FILE = os.path.join(EXPORT_DIR,'export.xml')
+    EXPORT_FILE = os.path.join(EXPORT_DIR,EXPORT_FILENAME)
+
+    RELATIVE_SRC_ROOT = 'enti'
+    RELATIVE_EXPORT_DIR = os.path.join(RELATIVE_SRC_ROOT, 'export')
+    RELATIVE_EXPORT_FILE = os.path.join(RELATIVE_EXPORT_DIR, EXPORT_FILENAME)
 
 class DBConfig:
     DB_TYPE = os.environ.get('DATABASE_TYPE', 'mysql')
