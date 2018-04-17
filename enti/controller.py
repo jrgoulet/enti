@@ -1,11 +1,13 @@
 from enti.tasks import import_entities
 from enti.query import Query
 from enti.database import session_scope
-from enti.settings import FileConfig
+from enti.settings import FileConfig, AppConfig
 from enti.utils.parser import run_entity_extraction, export_entity_xml
 import os
 from enti.extensions import log
 from enti.models import EntityAttribute, EntityAttributeField, Entity
+from enti.synthesys import SynicAPI
+
 from pprint import pprint
 
 
@@ -254,3 +256,13 @@ class Controller:
                         log.info('Entity extraction successful, starting import')
                         import_entities(entities)
                 os.remove(filename)
+
+    def sync_synic(self):
+
+        return {
+            'url': SynicAPI.synthesys_url(exclude_auth=True),
+            'user': AppConfig.SYNTHESYS_USER,
+            'api': SynicAPI.check_connection(),
+            'knowledge_graphs': SynicAPI.get_knowledge_graphs(),
+            'has_ee_pipeline': SynicAPI.has_ee_pipeline()
+        }

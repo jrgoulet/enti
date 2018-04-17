@@ -177,3 +177,14 @@ def export_entities(null):
 
     except Exception as e:
         emit('danger', {'title': 'Error', 'message': str(e)})
+
+@socketio.on('synic.sync', namespace='/')
+def sync_synic(data=None):
+    log.info('Synchronizing Synic API')
+
+    try:
+        emit('synic.sync', controller.sync_synic())
+
+    except Exception as e:
+        emit('synic.sync.fail', None)
+        emit('danger', {'title': 'Error', 'message': str(e)})

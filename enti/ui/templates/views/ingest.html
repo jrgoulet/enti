@@ -1,0 +1,42 @@
+<div class="row entity-header-row">
+    <div class="col-md-12">
+        <span class="entity-header-name">Ingest Entities</span>
+    </div>
+</div>
+<div class="row entity-container-panel">
+    {% include "partials/synic_properties.html" %}
+</div>
+<div class="row entity-container-panel" ng-show="synicApi.connected === false">
+    <div class="col-md-6 col-md-offset-3" align="center">
+        <p>
+            Synthesys is not connected, please check app configuration or server status.
+            Ingestion is disabled until connection is active.
+        </p>
+    </div>
+</div>
+<div class="row entity-container-panel" ng-show="synicApi.connected === true && synicApi.hasEEPipeline === false">
+    <div class="col-md-6 col-md-offset-3" align="center">
+        <p>
+            Synthesys is missing the DataJetway pipeline, 'externalEntityPipeline', that
+            facilitates External Entity ingestion. Ingestion is disabled until this required
+            component is installed.
+        </p>
+    </div>
+</div>
+<div class="row entity-container-panel" ng-show="synicApi.connected === true && synicApi.hasEEPipeline === true">
+    <div class="col-md-3 lh-40" align="left">
+        <h1 class="entity-container-h1">Select Knowledge Graph</h1>
+    </div>
+    <div class="col-md-3 lh-40" align="left">
+        <select ng-model="selectedKG">
+            <option ng-repeat="kg in synicApi.knowledgeGraphs" value="{a kg a}">{a kg a}</option>
+        </select>
+    </div>
+    <div class="col-md-4 lh-40" align="left">
+        <button class="button button-3d button-blue"
+                ng-show="selectedKG !== null"
+                ng-click="synic.ingest()">
+            Ingest
+        </button>
+    </div>
+</div>

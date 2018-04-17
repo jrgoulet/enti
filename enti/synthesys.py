@@ -14,7 +14,7 @@ class SynicAPI:
     ENTITY_SCHEMA_ENGINE = 'resources/default/engines/entities-1.1.1.engine'
 
     @staticmethod
-    def synthesys_url():
+    def synthesys_url(exclude_auth=False):
         """Parses Synthesys URL"""
 
         def check_null(string):
@@ -42,9 +42,9 @@ class SynicAPI:
         auth_prefix = '' if user is None or pswd is None else '{}:{}@'.format(user, pswd)
         port_suffix = '' if port is None else ':{}'.format(port)
 
-        synthesys_url = '{}://{}{}{}/'.format(protocol, auth_prefix, host, port_suffix)
-
-        return synthesys_url
+        if exclude_auth:
+            return '{}://{}{}/'.format(protocol, host, port_suffix)
+        return '{}://{}{}{}/'.format(protocol, auth_prefix, host, port_suffix)
 
     @staticmethod
     def synic_api_url(endpoint=''):

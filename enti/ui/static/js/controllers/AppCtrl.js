@@ -319,6 +319,37 @@ define(['./module'], function (controllers) {
                     console.log('Update attribute: ' + entityId + ', ' + attributeId + ', ' + fieldId)
                 }
             };
+            //////////////////////////////////////////////////
+
+            $scope.synicApi = {
+                url: null,
+                user: null,
+                version: null,
+                knowledgeGraphs: [],
+                hasEEPipeline: false,
+                connected: false
+            };
+            $scope.selectedKG = null;
+            $scope.synic = {
+                init: function() {
+                    io.emit('synic.sync', null);
+                    $scope.view = 'ingest';
+                },
+                sync: {
+                    success: function(data) {
+                        $scope.synicApi.version = data.api.version;
+                        $scope.synicApi.url = data.url;
+                        $scope.synicApi.user = data.user;
+                        $scope.synicApi.connected = true;
+                        $scope.synicApi.knowledgeGraphs = data.knowledge_graphs;
+                        $scope.synicApi.hasEEPipeline = data.has_ee_pipeline;
+                    }
+                },
+                ingest: function() {
+                    io.emit('synic.ingest', {'kg': $scope.selectedKG})
+                }
+            };
+
 
             //////////////////////////////////////////////////
 
@@ -371,10 +402,15 @@ define(['./module'], function (controllers) {
                 n.danger(message.title, message.message);
             });
 
+            io.on('synic.sync', function (data) {
+               $scope.synic.sync.success(data)
+            });
+
             //////////////////////////////////////////////////
 
             io.emit('attribute.sync', null);
             io.emit('entity.sync.all', null);
             io.emit('entity.type.sync', null);
+            io.emit('synic.sync', null);
         }])
 });

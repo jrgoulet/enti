@@ -19,6 +19,10 @@ elif [ "$CMD" = "stop" ]; then
   echo "Stopping Enti Server"
   docker-compose stop
 
+elif [ "$CMD" = "restart" ]; then
+  echo "Stopping Enti Server"
+  docker-compose restart
+
 elif [ "$CMD" = "down" ]; then
   echo "Removing Enti Server"
   docker-compose down --remove-orphans
