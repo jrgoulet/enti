@@ -8,47 +8,40 @@ ENTITIES_TAG = 'entities'
 ENTITY_TAG = 'entity'
 
 
-def run_entity_extraction(filename):
-    root = load_xml(filename)
-
-    print('<{}:{}>'.format(root.tag, root.attrib))
-
-    if root.tag == ENTITIES_TAG:
-        return extract_entities(root)
-
-    else:
-        print('Invalid XML document. Expected tag <{}>, but read <{}>'.format(ENTITIES_TAG, root.tag))
-
 def load_yml(filename):
     """Loads a YML document"""
     with open(filename) as f:
-        yml = yaml.safe_load(f)
-        pprint(yml)
-        return yml
+        return yaml.safe_load(f)
 
 
 def load_xml(filename):
-    '''Loads XML document and strips the namespaces'''
+    """Loads XML document and strips the namespaces"""
     it = ET.iterparse(filename)
     for _, el in it:
         el.tag = el.tag.split('}', 1)[1]
     return it.root
 
 
+def run_entity_extraction(filename):
+    """Runs entity extraction from XML to dictionary format"""
+    root = load_xml(filename)
+    if root.tag == ENTITIES_TAG:
+        return extract_entities(root)
+    else:
+        raise Exception("Invalid entity document. Could not parse the entity file.")
+
+
 def extract_entities(node):
-    print('Extracting entities')
-
+    """Extracts entities from root XML node"""
     entities = []
-
     for child in node:
         if child.tag == ENTITY_TAG:
             entities.append(extract_entity(child))
-
-    pprint(entities)
     return entities
 
 
 def extract_entity(node):
+    """Extracts an individual entity and attributes from an entity node"""
     entity = {
         'id': node.attrib.get('id'),
         'name': node.attrib.get('name'),
@@ -64,103 +57,35 @@ def extract_entity(node):
                 **attr.attrib
             })
     entity['attributes'] = attributes
-
     return entity
 
 
-def extract_attributes():
-    root = load_xml('../../res/attributes.xml')
-    attributes = [
-        {
-            'type': child.tag,
-            **child.attrib
-        }
-        for child in root
-    ]
-    pprint(attributes)
+def export_entity_xml(entities, source='enti'):
+    """Exports entities from pre-constructed dict format into an XML file
 
-
-def build_entity_xml():
-    entities = run_entity_extraction('../../res/enam.xml')
-
+    :param entities: Pre-constructed entity dict
+    :param source: Source attribute for root node
+    """
     root_attrs = {
         'xmlns': 'digitalreasoning.com/entity/definitions',
-        'source': 'test'
+        'source': source
     }
     root = ET.Element('entities', **root_attrs)
-
-    for entity in entities:
-        entity_attrs = {
-            'id': entity.get('id'),
-            'name': entity.get('name'),
-            'type': entity.get('type'),
-            'canonical': entity.get('canonical')
-        }
-        node = ET.SubElement(root, 'entity', entity_attrs)
-
-        attr_dict = {}
-
-        for attr in entity.get('attributes', []):
-
-            pprint(attr)
-            name = attr.pop('id', None)
-
-            if attr_dict.get(name) is None:
-                attr_dict[name] = [attr]
-            else:
-                attr_dict[name].append(attr)
-
-        pprint(attr_dict)
-
-        for k,v in attr_dict.items():
-
-            val_node = ET.SubElement(node, k)
-
-            for val in v:
-                ET.SubElement(val_node, 'value', val)
-
-    tree = ET.ElementTree(root)
-    tree.write('../../res/out.xml', encoding='utf-8', xml_declaration=True)
-
-
-def export_entity_xml(entities):
-
-    root_attrs = {
-        'xmlns': 'digitalreasoning.com/entity/definitions',
-        'source': 'test'
-    }
-    root = ET.Element('entities', **root_attrs)
-
     for entity_id, entity in entities.items():
-
         entity_attrs = {
             'id': entity.get('id'),
             'name': entity.get('name'),
             'type': entity.get('type'),
             'canonical': str(entity.get('canonical')).lower()
         }
-
         node = ET.SubElement(root, 'entity', entity_attrs)
-
         for attribute_id, attribute in entity.get('attributes', {}).items():
-
             attr_node = ET.SubElement(node, attribute_id)
-
             for value in attribute.get('data', []):
-
                 fields = {}
-
                 for field in value.get('fields', []):
-
                     xml_id = field.get('xml_id', None)
                     fields[xml_id] = field['value']
-
                 ET.SubElement(attr_node, 'value', fields)
-
     tree = ET.ElementTree(root)
     tree.write(FileConfig.EXPORT_FILE, encoding='utf-8', xml_declaration=True)
-
-if __name__ == '__main__':
-    # run()
-    # build_entity_xml()
-    load_yml('../schema/attributes.yml')

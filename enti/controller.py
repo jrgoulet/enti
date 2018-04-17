@@ -1,4 +1,4 @@
-from enti.tasks import initialize_defaults, initialize_attributes, import_entities
+from enti.tasks import import_entities
 from enti.query import Query
 from enti.database import session_scope
 from enti.settings import FileConfig
@@ -15,8 +15,7 @@ class Controller:
         pass
 
     def initialize(self):
-        initialize_defaults()
-        initialize_attributes()
+        pass
 
     def sync_attributes(self):
 

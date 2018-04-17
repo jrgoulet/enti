@@ -1,6 +1,5 @@
 from enti.database import init_db
 from enti.extensions import celery, log
-from .initialization import initialize_defaults, initialize_attributes
 from .entity import import_entities, clean_empty_entity_attrs
 
 @celery.on_after_configure.connect

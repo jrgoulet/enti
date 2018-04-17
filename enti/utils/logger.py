@@ -15,11 +15,7 @@ class Logger:
         self.init_stream()
 
     def init_stream(self):
-        """
-        Configures stream messaging
-
-        :return: None
-        """
+        """Configures stream messaging"""
 
         # Get the logger
         self.stream = logging.getLogger('canary-stream')

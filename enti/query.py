@@ -1,5 +1,5 @@
 from enti.models import AttributeType, ArityType, Attribute, EntityType, Entity, AttributeField, LinkedAttributeField, \
-    EntityAttribute, EntityAttributeField
+    EntityAttribute, EntityAttributeField, Setting
 
 
 class Query:
@@ -113,3 +113,7 @@ class Query:
                     EntityAttributeField.linked_field_id == linked_field_id
                 ).first()
 
+    class Setting:
+        @staticmethod
+        def get(session, id):
+            return session.query(Setting).get(id)

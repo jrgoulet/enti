@@ -4,6 +4,7 @@ from enti.version import __version__
 from flask_cors import CORS
 from enti.settings import AppConfig
 from enti.extensions import socketio, celery, log
+from enti.database import init_db
 
 class Server():
 
@@ -15,6 +16,7 @@ class Server():
         if AppConfig.ROLE == 'ui':
 
             log.info(
+                "\n"
                 "            _   _   \n"
                 "  ___ _ __ | |_(_)  \n"
                 " / _ \ '_ \| __| |  External Entity Manager\n"
@@ -27,12 +29,12 @@ class Server():
             self.app = create_app(AppConfig)
             CORS(self.app)
 
-            log.info('Application set to run SocketIO server')
+            init_db()
+            log.info('Server initialization complete')
         else:
 
-
             self.app = celery
-            log.info('Application set to run Celery server')
+            log.info('Server initialization complete')
 
     def run(self):
         """

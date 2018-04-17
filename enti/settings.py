@@ -4,8 +4,10 @@ import os
 
 
 class SynthesysConfig:
+    ENTITIES_SRC = os.environ.get('ENTITIES_SRC', 'enti')
     SYNTHESYS_HOST = os.environ.get('SYNTHESYS_HOST', '0.0.0.0')
     SYNTHESYS_PORT = os.environ.get('SYNTHESYS_PORT', '8999')
+    SYNTHESYS_SSL = os.environ.get('SYNTHESYS_SSL', 'false')
     SYNTHESYS_USER = os.environ.get('SYNTHESYS_USER', 'admin')
     SYNTHESYS_PASS = os.environ.get('SYNTHESYS_PASS', 'pass')
 

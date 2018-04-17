@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+#    image: jrgoulet/enti:0.0.1-dev
     environment:
       - ROLE=ui
       - SERVER_HOST=0.0.0.0
@@ -16,51 +17,40 @@ services:
       - logs:/var/log/app
       # Remove after prototyping
       - .:/opt/enti
-    tty: true
+    #tty: true
     command: "gunicorn -k eventlet -w 1 enti:app -b 0.0.0.0:5100 --reload"
 
-  worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - ROLE=worker
-    volumes:
-      - logs:/var/log/app
-    depends_on:
-      - redis
-    restart: always
-    tty: true
-    command: "celery -A enti.tasks worker -l INFO"
+# Enable for background task management
 
-  beat:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - ROLE=beat
-    volumes:
-      - logs:/var/log/app
-    depends_on:
-      - redis
-    restart: always
-    tty: true
-    command: "celery -A enti.tasks beat -l INFO"
-
-#  elasticsearch:
-#    image: elasticsearch:5.4.3
-#    command: elasticsearch -E network.host=0.0.0.0 -E discovery.zen.minimum_master_nodes=1
+#  worker:
+##    build:
+##      context: .
+##      dockerfile: Dockerfile
+#    image: jrgoulet/enti:0.0.1-dev
 #    environment:
-#      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
-#    ports:
-#      - "9200:9200"
-#
-#  kibana:
-#   image: kibana:5.4.3
-#   environment:
-#     - ELASTICSEARCH_URL=http://elasticsearch:9200
-#   ports:
-#     - "5601:5601"
+#      - ROLE=worker
+#    volumes:
+#      - logs:/var/log/app
+#    depends_on:
+#      - redis
+#    restart: always
+#    tty: true
+#    command: "celery -A enti.tasks worker -l INFO"
+
+#  beat:
+##    build:
+##      context: .
+##      dockerfile: Dockerfile
+#    image: jrgoulet/enti:0.0.1-dev
+#    environment:
+#      - ROLE=beat
+#    volumes:
+#      - logs:/var/log/app
+#    depends_on:
+#      - redis
+#    restart: always
+#    tty: true
+#    command: "celery -A enti.tasks beat -l INFO"
 
   pma:
     image: phpmyadmin/phpmyadmin
@@ -83,8 +73,6 @@ services:
       - MYSQL_PASSWORD=enti
     ports:
       - "3307:3306"
-    #volumes:
-    #  - ./res/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
 volumes:
   logs:

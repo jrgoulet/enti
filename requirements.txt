@@ -41,3 +41,4 @@ tenacity>=4.1.0
 tornado>=4.4.3
 Werkzeug==0.10.4
 WTForms==2.0.2
+pycrypto==2.6.1

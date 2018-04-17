@@ -7,7 +7,8 @@
     </div>
     <div class="row">
         <select ng-init="attribute.init.add(selectedEntity)"
-                ng-model="form.attribute.new[selectedEntity].attributeId">
+                ng-model="form.attribute.new[selectedEntity].attributeId"
+                ng-change="form.attribute.new[selectedEntity].fields = {}">
             <option ng-repeat="attr in attributes" value="{a attr.id a}">{a attr.name a}</option>
         </select>
     </div>
