@@ -10,6 +10,7 @@ class SynthesysConfig:
     SYNTHESYS_SSL = os.environ.get('SYNTHESYS_SSL', 'false')
     SYNTHESYS_USER = os.environ.get('SYNTHESYS_USER', 'admin')
     SYNTHESYS_PASS = os.environ.get('SYNTHESYS_PASS', 'pass')
+    INSTALL_DIR = os.environ.get('INSTALL_DIR', '/')
 
 class UIConfig:
     FLASK_RELOAD = True
@@ -43,12 +44,7 @@ class CeleryConfig:
     BACKEND_URL = os.environ.get('CELERY_BACKEND_URL', 'redis://redis:6379')
 
 class AppConfig(CeleryConfig, DBConfig, UIConfig, FileConfig, SynthesysConfig):
-    MODE = os.environ.get('MODE', 'development')
+    MODE = os.environ.get('DEPLOYMENT_MODE', 'development')
     SERVER_HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
     SERVER_PORT = os.environ.get('SERVER_PORT', 5100)
     ROLE = os.environ.get('ROLE', 'worker')
-
-    def echo(self):
-        print("Server Mode: {}\n".format(AppConfig.MODE)+
-              "Server URL: {}:{}".format(AppConfig.SERVER_HOST, AppConfig.SERVER_PORT)+
-              "Server Role: {}".format(AppConfig.ROLE))

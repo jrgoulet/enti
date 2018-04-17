@@ -4,8 +4,16 @@ CMD="$1"
 TAG="$2"
 
 if [ "$CMD" = "start" ]; then
-  echo "Starting Enti Server"
-  docker-compose up -d
+  if [ ! -f ".env" ]; then
+    echo "Environment file '.env' not found."
+    echo "A sample environment file is available at './env.sample'."
+    echo "See instructions in README.md to create application environment."
+  else
+    echo "Loading environment (Note: Stored settings will not be overwritten)."
+    source .env
+    echo "Starting Enti Server"
+    docker-compose up -d
+  fi
 
 elif [ "$CMD" = "stop" ]; then
   echo "Stopping Enti Server"

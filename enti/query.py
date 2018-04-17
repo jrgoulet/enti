@@ -117,3 +117,7 @@ class Query:
         @staticmethod
         def get(session, id):
             return session.query(Setting).get(id)
+
+        @staticmethod
+        def all(session):
+            return session.query(Setting).all()

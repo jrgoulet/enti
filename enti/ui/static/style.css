@@ -8,7 +8,7 @@ body {
     color: #333;
     font-size: 1.3em !important;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    background-color: #d1d3d4 !important;
+    background-color: #fff !important;
     -webkit-font-smoothing: antialiased;
     height: 100%;
 }
@@ -308,7 +308,7 @@ body * {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    /*height: 100%;*/
     background-color: #fff;
 }
 
