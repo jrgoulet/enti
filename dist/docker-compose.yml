@@ -1,0 +1,53 @@
+version: '2.1'
+
+services:
+  ui:
+    image: jrgoulet/enti:latest
+    environment:
+      - ROLE=ui
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE}
+      - SECRET_KEY=${SECRET_KEY}
+      - SERVER_HOST=${SERVER_HOST}
+      - SERVER_PORT=${SERVER_PORT}
+      - ENTITIES_SRC=${ENTITIES_SRC}
+      - SYNTHESYS_LOCAL=${SYNTHESYS_LOCAL}
+      - SYNTHESYS_HOST=${SYNTHESYS_HOST}
+      - SYNTHESYS_PORT=${SYNTHESYS_PORT}
+      - SYNTHESYS_SSL=${SYNTHESYS_SSL}
+      - SYNTHESYS_USER=${SYNTHESYS_USER}
+      - SYNTHESYS_PASS=${SYNTHESYS_PASS}
+      - INSTALL_DIR=${INSTALL_DIR}
+      - DATABASE_TYPE=${DATABASE_TYPE}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASS=${DATABASE_PASS}
+    ports:
+      - "5100:5100"
+    restart: always
+    volumes:
+      - logs:/var/log/app
+      - /mnt/enti/export:/opt/enti/enti/export
+    command: "gunicorn -k eventlet -w 1 enti:app -b ${SERVER_HOST}:${SERVER_PORT} --reload"
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+    restart: always
+    ports:
+      - "8080:80"
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PW}
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASS}
+    ports:
+      - "3307:3306"
+
+volumes:
+  logs:
