@@ -38,6 +38,8 @@ elif [ "$CMD" = "deploy" ]; then
     echo "Usage: ./enti deploy [tag]"
   else
     echo "Deploying jrgoulet/enti:$TAG"
+    docker-compose down
+    docker-compose -f build.yml up --build -d
     docker tag enti_ui jrgoulet/enti:$TAG
     docker tag enti_ui jrgoulet/enti:latest
     docker push jrgoulet/enti:$TAG

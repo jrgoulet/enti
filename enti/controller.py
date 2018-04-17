@@ -7,14 +7,15 @@ import os
 from enti.extensions import log
 from enti.models import EntityAttribute, EntityAttributeField, Entity
 from enti.synthesys import SynicAPI
-
+from datetime import datetime
 from pprint import pprint
+from enti.utils.time import get_elapsed_minutes
 
 
 class Controller:
 
     def __init__(self):
-        pass
+        self.last_ingestion_ts = None
 
     def initialize(self):
         pass
@@ -266,3 +267,14 @@ class Controller:
             'knowledge_graphs': SynicAPI.get_knowledge_graphs(),
             'has_ee_pipeline': SynicAPI.has_ee_pipeline()
         }
+
+    def ingest_entities(self, kg_name):
+
+        if get_elapsed_minutes(self.last_ingestion_ts, max_on_null_value=True) < 10:
+            raise Exception('Last ingestion time was recent. Please wait at least 10 minutes before each ingestion.')
+
+        entity_json = self.sync_entities()
+        export_entity_xml(entity_json)
+        task_id = SynicAPI.ingest(kg_name)
+        self.last_ingestion_ts = datetime.now()
+        return {'taskId': task_id}

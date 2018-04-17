@@ -1,6 +1,7 @@
 
 from enti.settings import AppConfig
 import requests
+from requests.auth import HTTPBasicAuth
 from enti.extensions import log
 import os
 
@@ -47,9 +48,9 @@ class SynicAPI:
         return '{}://{}{}{}/'.format(protocol, auth_prefix, host, port_suffix)
 
     @staticmethod
-    def synic_api_url(endpoint=''):
+    def synic_api_url(endpoint='', exclude_auth=False):
         """Builds the Synic API URL"""
-        return '{}{}{}'.format(SynicAPI.synthesys_url(),'synic/api/', endpoint)
+        return '{}{}{}'.format(SynicAPI.synthesys_url(exclude_auth=exclude_auth),'synic/api/', endpoint)
 
     @staticmethod
     def check_connection():
@@ -91,6 +92,7 @@ class SynicAPI:
                 return kg_list
 
             else:
+
                 raise Exception('Synic API List Knowledge Graphs request returned code {}'.format(r.status_code))
 
         except Exception as e:
@@ -134,7 +136,7 @@ class SynicAPI:
         :param test: Test parameter used to bypass function
         :return: Task ID of the resulting process
         """
-        export_filename = os.path.join(AppConfig.INSTALL_DIR, AppConfig.RELATIVE_EXPORT_FILE)
+        export_filename = os.path.join(AppConfig.INSTALL_DIR, AppConfig.RELATIVE_EXPORT_DIR)
         log.debug('Absolute path of export file on host machine: {}'.format(export_filename))
 
         if not SynicAPI.has_ee_pipeline():
@@ -142,7 +144,7 @@ class SynicAPI:
 
         params = {
             'kb': kg_name,
-            'process_type': 'jet',
+            'processType': 'jet',
             'application': SynicAPI.EE_PIPELINE_NAME,
             'invocationConfig': {
                 'input': export_filename,
@@ -150,6 +152,9 @@ class SynicAPI:
                 'kgName': kg_name
             }
         }
+
+        log.debug('Ingestion params', extra=params)
+        log.debug('Ingestion URL: {}'.format(SynicAPI.synic_api_url('process', exclude_auth=True)))
 
         if test:
             log.debug('*** API Request to /process endpoint is being simulated ***')
@@ -179,7 +184,9 @@ class SynicAPI:
                 "issuedCommand": None
             }
         else:
-            r = requests.post(SynicAPI.synic_api_url('process'), data=params)
+            r = requests.post(SynicAPI.synic_api_url('process', exclude_auth=True), json=params, auth=HTTPBasicAuth(
+                AppConfig.SYNTHESYS_USER, AppConfig.SYNTHESYS_PASS
+            ))
             if r.status_code == 200:
                 response = r.json()
             else:

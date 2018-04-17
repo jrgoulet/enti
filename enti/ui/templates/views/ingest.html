@@ -23,20 +23,58 @@
         </p>
     </div>
 </div>
+<div class="row entity-container-panel" ng-show="lastIngest.taskId !== null">
+    <div class="col-md-2">
+        <h1 class="entity-container-h1">Last Ingestion</h1>
+    </div>
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-3" align="right">
+                <span class="attribute-name">Graph ID</span>
+            </div>
+            <div class="col-md-9 lh-40" align="left">
+                <span class="entity-property-value">{a lastIngest.graphId a}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" align="right">
+                <span class="attribute-name">Task ID</span>
+            </div>
+            <div class="col-md-9 lh-40" align="left">
+                <span class="entity-property-value">{a lastIngest.taskId a}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" align="right">
+                <span class="attribute-name">Time</span>
+            </div>
+            <div class="col-md-9 lh-40" align="left">
+                <span class="entity-property-value" am-time-ago="lastIngest.ts"></span>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row entity-container-panel" ng-show="synicApi.connected === true && synicApi.hasEEPipeline === true">
-    <div class="col-md-3 lh-40" align="left">
-        <h1 class="entity-container-h1">Select Knowledge Graph</h1>
+    <div class="col-md-2 lh-40" align="left">
+        <h1 class="entity-container-h1">Knowledge Graph</h1>
     </div>
-    <div class="col-md-3 lh-40" align="left">
-        <select ng-model="selectedKG">
-            <option ng-repeat="kg in synicApi.knowledgeGraphs" value="{a kg a}">{a kg a}</option>
-        </select>
-    </div>
-    <div class="col-md-4 lh-40" align="left">
-        <button class="button button-3d button-blue"
-                ng-show="selectedKG !== null"
-                ng-click="synic.ingest()">
-            Ingest
-        </button>
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-3" align="right">
+                <span class="attribute-name">Select Graph ID</span>
+            </div>
+            <div class="col-md-6 lh-40" align="left">
+                <select ng-model="selectedKG">
+                    <option ng-repeat="kg in synicApi.knowledgeGraphs" value="{a kg a}">{a kg a}</option>
+                </select>
+            </div>
+            <div class="col-md-3" align="left">
+                <button class="button button-3d button-blue button-small"
+                        ng-show="selectedKG !== null"
+                        ng-click="synic.ingest.submit()">
+                    Ingest
+                </button>
+            </div>
+        </div>
     </div>
 </div>

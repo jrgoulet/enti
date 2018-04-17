@@ -10,4 +10,4 @@ def setup_periodic_tasks(sender, **kwargs):
     Runs on startup for celery containers
     """
     sender.add_periodic_task(60, clean_empty_entity_attrs, name='Clean Entity Attributes')
-    init_db()
+

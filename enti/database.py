@@ -139,7 +139,7 @@ def init_db():
                 if not engine.dialect.has_table(engine, model.__tablename__):
                     model.__table__.create(engine)
 
-            initialize_settings()
+            #initialize_settings()
             initialize_entity_schema()
             initialize_attributes()
 
@@ -148,7 +148,7 @@ def init_db():
             log.info('Database initialized')
 
         except Exception as e:
-            # log.exception(e)
+            log.exception(e)
             log.info('Waiting for database to initialize')
             sleep(5)
 

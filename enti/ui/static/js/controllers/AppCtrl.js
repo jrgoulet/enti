@@ -240,7 +240,7 @@ define(['./module'], function (controllers) {
                  * Set by 1st column, displayed in 2nd column
                  * @param filter
                  */
-                filter: function(filter) {
+                filter: function (filter) {
                     console.log('Filter set to ' + filter);
                     $scope.entityFilter = filter;
                 }
@@ -321,6 +321,7 @@ define(['./module'], function (controllers) {
             };
             //////////////////////////////////////////////////
 
+            $scope.source = 'default';
             $scope.synicApi = {
                 url: null,
                 user: null,
@@ -330,13 +331,18 @@ define(['./module'], function (controllers) {
                 connected: false
             };
             $scope.selectedKG = null;
+            $scope.lastIngest = {
+                ts: null,
+                graphId: null,
+                taskId: null
+            };
             $scope.synic = {
-                init: function() {
+                init: function () {
                     io.emit('synic.sync', null);
                     $scope.view = 'ingest';
                 },
                 sync: {
-                    success: function(data) {
+                    success: function (data) {
                         $scope.synicApi.version = data.api.version;
                         $scope.synicApi.url = data.url;
                         $scope.synicApi.user = data.user;
@@ -345,8 +351,16 @@ define(['./module'], function (controllers) {
                         $scope.synicApi.hasEEPipeline = data.has_ee_pipeline;
                     }
                 },
-                ingest: function() {
-                    io.emit('synic.ingest', {'kg': $scope.selectedKG})
+                ingest: {
+                    submit: function () {
+                        $scope.lastIngest.graphId = $scope.selectedKG;
+                        io.emit('synic.ingest', {'kg': $scope.selectedKG})
+                    },
+                    success: function (data) {
+                        n.success('Ingestion', 'Entities have been sent to Synthesys for ingestion with Task ID: '+ data.taskId);
+                        $scope.lastIngest.taskId = data.taskId;
+                        $scope.lastIngest.ts = moment();
+                    }
                 }
             };
 
@@ -403,7 +417,11 @@ define(['./module'], function (controllers) {
             });
 
             io.on('synic.sync', function (data) {
-               $scope.synic.sync.success(data)
+                $scope.synic.sync.success(data);
+            });
+
+            io.on('synic.ingest.success', function (data) {
+                $scope.synic.ingest.success(data);
             });
 
             //////////////////////////////////////////////////

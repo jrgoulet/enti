@@ -188,3 +188,19 @@ def sync_synic(data=None):
     except Exception as e:
         emit('synic.sync.fail', None)
         emit('danger', {'title': 'Error', 'message': str(e)})
+
+@socketio.on('synic.ingest', namespace='/')
+def sync_synic(data):
+
+    log.info('Sending entities to Synthesys for ingestion')
+
+    try:
+        kg_name = data.get('kg')
+
+        if kg_name is None:
+            raise Exception('Knowledge graph cannot be null')
+
+        emit('synic.ingest.success', controller.ingest_entities(kg_name))
+
+    except Exception as e:
+        emit('danger', {'title': 'Error', 'message': str(e)})
